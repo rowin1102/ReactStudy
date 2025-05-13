@@ -15,11 +15,10 @@ function App() {
         <li>Java</li>
         <li>Oracle</li>
         <li>JSP</li>
-        <li>Sptring Boot</li>
+        <li>Spring Boot</li>
       </ul>
     </ol>
-    </>
-  )
+  </>)
 }
 
 export default App
