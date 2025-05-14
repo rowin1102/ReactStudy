@@ -7,7 +7,7 @@ import NavView from './components/navigation/NavView';
 import NavWrite from './components/navigation/NavWrite';
 import ArticleList from './components/article/ArticleList';
 import ArticleView from './components/article/ArticleView';
-import ArticleWrite from "./components/article/ArticleWrite";
+import ArticleWrite from './components/article/ArticleWrite';
 
 // 페이지가 없을때 임시로 사용하기 위한 컴포넌트
 function ReadyComp() {
