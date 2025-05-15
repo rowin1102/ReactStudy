@@ -112,12 +112,6 @@ function App() {
          // 복사된 배열을 통해 스테이트를 변경한다.
          setBoardData(copyBoardData);
    
-         /* 배열의 복사본을 만들면 메모리에는 새로운 배열이 하나 추가된다. 복사본에 데이터를
-          추가한 후 이를 통해 State를 변경한다. 그러면 새롭게 생성된 배열의 참조값을 통해
-          State를 변경했으므로 React는 변화를 감지하여 새로운 렌더링을 하게 된다.
-          JS는 얕은참조라는 개념을 통해 객체의 변화를 감지하도록 설계되어 있어 이와 같이 
-          처리하는 것이다. */
-
          // 추가방법2(비추천)
          // boardData.push(addBoardData);
          // console.log(boardData);
