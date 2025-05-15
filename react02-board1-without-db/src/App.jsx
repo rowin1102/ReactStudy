@@ -131,6 +131,32 @@ function App() {
         alert('빈값이 존재합니다.');
       }
     }} />
+  } else if(mode === 'delete') {
+    // 삭제1(권장)
+    // 새로운 빈 배열 생성
+    let newBoardData = [];
+
+    // 데이터의 갯수만큼 반복
+    for(let i=0; i<boardData.length; i++) {
+      // 삭제하려는 게시물이 아닌것만 새로운 배열에 추가한다.
+      if(no != boardData[i].no) {
+        // 새로운 배열에는 삭제하려는 게시물이 추가되지 않는다.
+        newBoardData.push(boardData[i]);
+      }
+    }
+    // 새로운 배열을 통해 스테이트를 변경하면 리렌더링이 된다.
+    setBoardData(newBoardData);
+    
+    // 삭제2(비권장)
+    // for(let i=0; i<boardData.length; i++) {
+    //   if(no === boardData[i].no) {
+    //     boardData.splice(i, 1);
+    //   }
+    // }
+    // setBoardData(newBoardData);
+    
+    // 삭제가 완료되면 리스트로 전환한다. 
+    setMode('list');
   } else {
     navComp = <ReadyComp />
     articleComp = '';
