@@ -150,6 +150,7 @@ const RouterHooks = () => {
         <li>detail : {pageNum}</li>
       </ul>
 
+      {/* 버튼에 함수 연결시 이벤트 리스너에 함수명만 붙여주면 된다. */}
       <button onClick={changeMode}>mode변경</button>
       <button onClick={prevPage}>이전Page</button>
       <button onClick={nextPage}>다음Page</button>
