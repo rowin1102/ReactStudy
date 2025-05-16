@@ -1,145 +1,56 @@
 // 라우팅 관련 컴포넌트 임포트
-import {BrowserRouter} from 'react-router-dom';
-import { Routes, Route, Link } from "react-router-dom";
+import { Routes, Route, useNavigate } from "react-router-dom";
 
-function List(props) {
-  return (<>
-    <header>
-      <h2>게시판-목록</h2>
-    </header>
+// 모듈화 처리한 컴포넌트 임포트
+import List from './components/board/List';
+import Write from './components/board/Write';
+import View from './components/board/View';
+import NotFound from './components/common/NotFound';
+import { useState } from "react";
 
-    <nav>
-      {/* 각 링크는 <a>에서 <Link> 컴포넌트로 변경 */}
-      {/* <a href="/write">글쓰기</a> */}
-      <Link to='/write'>글쓰기</Link>
-    </nav>
-
-    <article>
-      <table id="boardTable">
-        <thead>
-          <tr>
-            <th>No</th>
-            <th>제목</th>
-            <th>작성자</th>
-            <th>날짜</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr>
-            <td className="cen">1</td>
-            <td><Link to="/view">오늘은 React공부하는 날</Link></td>
-            <td className="cen">낙짜쌤</td>
-            <td className="cen">2030-05-05</td>
-          </tr>
-        </tbody>
-      </table>
-    </article>
-  </>);
-}
-        
-function View() {
-  return (<>
-    <header>
-      <h2>게시판 - 읽기</h2>
-    </header>
-
-    <nav>
-      {/* <a href="/list">목록</a>&nbsp;
-      <a href="/edit">수정</a>&nbsp;
-      <a href="/delete">삭제</a> */}
-      <Link to='/list'>목록</Link> &nbsp;
-      <Link to='/edit'>수정</Link> &nbsp;
-      <Link to='/delete'>삭제</Link>
-    </nav>
-
-    <article>
-      <table id="boardTable">
-        <colgroup>
-          <col width="30%" />
-          <col width="*" />
-        </colgroup>
-        <tbody>
-          <tr>
-            <td>작성자</td>
-            <td>성유겸</td>
-          </tr>
-          <tr>
-            <td>제목</td>
-            <td>오늘은 React공부하는 날</td>
-          </tr>
-          <tr>
-            <td>날짜</td>
-            <td>2023-05-05</td>
-          </tr>
-          <tr>
-            <td>내용</td>
-            <td>열심히 해봅시다<br />열공합시다</td>
-          </tr>
-        </tbody>
-      </table>
-    </article>
-  </>);
-}
-
-function Write(props) {
-  return (<>
-    <header>
-      <h2>게시판 - 작성</h2>
-    </header>
-
-    <nav>
-      {/* <a href="/list">목록</a> */}
-      <Link to='/list'>목록</Link>
-    </nav>
-
-    <article>
-      <form>
-        <table id="boardTable">
-          <tbody>
-            <tr>
-              <td>작성자</td>
-              <td><input type="text" name="writer" /></td>
-            </tr>
-            <tr>
-              <td>제목</td>
-              <td><input type="text" name="title" /></td>
-            </tr>
-            <tr>
-              <td>내용</td>
-              <td><textarea name="contents" cols="22" rows="3"></textarea></td>
-            </tr>
-          </tbody>
-        </table>
-        <input type="submit" value="전송" />
-      </form>
-    </article>
-  </>);
-}
-
-const NotFound = () => {
-  return (<>
-    <h2>Not Found</h2>
-    <p>
-      페이지를 찾을 수 없습니다. <br />
-    </p>
-    <Link to='/'>Home으로 이동</Link>
-  </>);
+// 작성일 생성을 위한 함수 정의
+const nowDate = () => {
+  let dateObj = new Date();
+  var year = dateObj.getFullYear();
+  var month = ("0" + (1 + dateObj.getMonth())).slice(-2);
+  var day = ("0" + dateObj.getDate()).slice(-2);
+  return year + '-' + month + '-' + day;
 }
 
 function App() {
+  // 데이터로 사용할 객체형 배열 생성
+  // 작성을 위해 기존 배열ㅇ르 스테이트로 변경한다.
+  const [boardData, setBoardData] = useState([
+    {no:1, title:'오늘은 React공부하는 날', writer:'낙짜샘', date:'2023-01-01', contents:'React를 뽀개봅시다'},
+    {no:2, title:'어제은 JS를 공부했음', writer:'유겸이', date:'2023-03-03', contents:'JS는 할게 너무 많아요'},
+    {no:3, title:'내일은 Project해야지', writer:'개똥이', date:'2023-05-05', contents:'Project는 뭘 만들어볼까?'}
+  ]);
+
+  // 일련번호 부여를 위한 스테이트 생성(시퀀스와 같은 용도)
+  const [nextNo, setNextNo] = useState(4);
+  // 작성 완료 후 페이지 이동을 위한 훅 선언
+  const navigate = useNavigate();
+
   return (<>
     {/* 라우팅 처리를 위해 App컴포넌트를 감싸야 하므로 이와같이 App.jsx에서 처리해도 된다.
       하지만 주로 main.jsx에서 처리하는게 좋다. */}
-    <BrowserRouter>
-      <Routes>
-        {/* 첫 실행시에는 목록이 렌더링 된다. */}
-        <Route path='/' element={<List />} />
-        <Route path='/list' element={<List />} />
-        <Route path='/view' element={<View />} />
-        <Route path='/write' element={<Write />} />
-        <Route path='*' element={<NotFound />} />
-      </Routes>
-    </BrowserRouter>
+    <Routes>
+      {/* 첫 실행시에는 목록이 렌더링 된다. */}
+      {/* 데이터로 사용할 배열을 프롭스로 자식컴포넌트로 전달 */}
+      <Route path='/' element={<List boardData={boardData} />} />
+      <Route path='/list' element={<List boardData={boardData} />} />
+      {/* 열람의 경우 게시물의 일련번호를 통해 객체를 선택해야 하므로 중첩라우터로
+        구현하고, 일련번호의 경우 :no로 기술되어 있다. */}
+      <Route path='/view'>
+        <Route path=':no' element={<View boardData={boardData} setBoardData={setBoardData}
+          navigate={navigate} />} />
+      </Route>
+      {/* Write 컴포넌트로 글쓰기 처리를 위한 모든 스테이트와 관련함수를 프롭스로 전달한다.  */}
+      <Route path='/write' element={<Write boardData={boardData} setBoardData={setBoardData}
+        nextNo={nextNo} setNextNo={setNextNo} navigate={navigate} nowDate={nowDate} />} />
+      {/* <Route path='/delete'></Route> */}
+      <Route path='*' element={<NotFound />} />
+    </Routes>
   </>); 
 }
 
