@@ -5,6 +5,7 @@ import { Routes, Route, useNavigate } from "react-router-dom";
 import List from './components/board/List';
 import Write from './components/board/Write';
 import View from './components/board/View';
+import Edit from "./components/board/Edit";
 import NotFound from './components/common/NotFound';
 import { useState } from "react";
 
@@ -39,7 +40,7 @@ function App() {
       {/* 데이터로 사용할 배열을 프롭스로 자식컴포넌트로 전달 */}
       <Route path='/' element={<List boardData={boardData} />} />
       <Route path='/list' element={<List boardData={boardData} />} />
-      {/* 열람의 경우 게시물의 일련번호를 통해 객체를 선택해야 하므로 중첩라우터로
+      {/* 열람의 경우 게시물의 일련번호를 통해 객체를 선택해야 하므로 중첩라우터로  
         구현하고, 일련번호의 경우 :no로 기술되어 있다. */}
       <Route path='/view'>
         <Route path=':no' element={<View boardData={boardData} setBoardData={setBoardData}
@@ -48,7 +49,10 @@ function App() {
       {/* Write 컴포넌트로 글쓰기 처리를 위한 모든 스테이트와 관련함수를 프롭스로 전달한다.  */}
       <Route path='/write' element={<Write boardData={boardData} setBoardData={setBoardData}
         nextNo={nextNo} setNextNo={setNextNo} navigate={navigate} nowDate={nowDate} />} />
-      {/* <Route path='/delete'></Route> */}
+      <Route path="/edit">
+        <Route path=":no" element={<Edit boardData={boardData} setBoardData={setBoardData}
+          navigate={navigate} nowDate={nowDate} />} />
+      </Route>
       <Route path='*' element={<NotFound />} />
     </Routes>
   </>); 

@@ -16,10 +16,18 @@ function View(props) {
     return prev;
   }, {});
 
-  let number = Number(params.no);
-  let indexMaxNum = props.boardData.length - 1;
-  let nextView = (props.boardData[indexMaxNum].no === number) ? number : number + 1;
-  let prevView = (number === props.boardData[0].no) ? number : number - 1;
+  const number = Number(params.no);
+  let currIndexNum;
+  
+  for(let i=0; i<props.boardData.length; i++) {
+    if(props.boardData[i].no === number) {
+      currIndexNum = i;
+      break;
+    }
+  }
+
+  let nextView = (currIndexNum + 1 < props.boardData.length) ? props.boardData[currIndexNum+1].no : number;
+  let prevView = (currIndexNum - 1 >= 0) ? props.boardData[currIndexNum-1].no : number;
 
   return (<>
     <header>
@@ -31,7 +39,7 @@ function View(props) {
       <a href="/edit">수정</a>&nbsp;
       <a href="/delete">삭제</a> */}
       <Link to='/list'>목록</Link> &nbsp;
-      <Link to='/edit'>수정</Link> &nbsp;
+      <Link to={'/edit/' + number}>수정</Link> &nbsp;
       <Link to='/delete' onClick={e => {
         e.preventDefault();
         if(window.confirm('삭제할까요?')) {
