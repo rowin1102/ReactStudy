@@ -74,7 +74,7 @@ function Edit(props) {
             <tr>
               <td>내용</td>
               <td><textarea name="contents" rows="3"
-              value={contents}
+                value={contents}
                 onChange={(event) => {
                   setContents(event.target.value);
                 }}></textarea></td>
