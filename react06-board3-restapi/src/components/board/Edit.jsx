@@ -32,7 +32,6 @@ function Edit(props) {
     }
   }, []);
 
-
   return (<>
     <header>
       <h2>게시판 - 작성</h2>
