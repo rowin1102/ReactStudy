@@ -1,0 +1,290 @@
+{
+  "results": [
+    {
+      "gender": "male",
+      "name": {
+        "title": "Mr",
+        "first": "Max",
+        "last": "Green"
+      },
+      "location": {
+        "street": {
+          "number": 4208,
+          "name": "The Grove"
+        },
+        "city": "Salford",
+        "state": "Humberside",
+        "country": "United Kingdom",
+        "postcode": "EB8H 3AY",
+        "coordinates": {
+          "latitude": "-12.1987",
+          "longitude": "-72.8274"
+        },
+        "timezone": {
+          "offset": "+4:00",
+          "description": "Abu Dhabi, Muscat, Baku, Tbilisi"
+        }
+      },
+      "email": "max.green@example.com",
+      "login": {
+        "uuid": "a596eb8f-4434-4356-a9af-0e48e77fa86e",
+        "username": "redzebra142",
+        "password": "mona",
+        "salt": "rslqnuBA",
+        "md5": "ce4233b110e18920e214761083e2d069",
+        "sha1": "3736e2f204e6d73f3dd508b22c7b0729d5a886b7",
+        "sha256": "3f4e95e7c8fa92d9c7451887955aad9a731d2c4c69a5b2b3435f4940406d5368"
+      },
+      "dob": {
+        "date": "1996-06-24T22:57:27.172Z",
+        "age": 28
+      },
+      "registered": {
+        "date": "2007-06-16T04:01:11.454Z",
+        "age": 17
+      },
+      "phone": "0151 250 9286",
+      "cell": "07439 985877",
+      "id": {
+        "name": "NINO",
+        "value": "TE 74 98 53 F"
+      },
+      "picture": {
+        "large": "https://randomuser.me/api/portraits/men/53.jpg",
+        "medium": "https://randomuser.me/api/portraits/med/men/53.jpg",
+        "thumbnail": "https://randomuser.me/api/portraits/thumb/men/53.jpg"
+      },
+      "nat": "GB"
+    },
+    {
+      "gender": "male",
+      "name": {
+        "title": "Mr",
+        "first": "Aymeric",
+        "last": "Fernandez"
+      },
+      "location": {
+        "street": {
+          "number": 3255,
+          "name": "Place de L'Église"
+        },
+        "city": "Colombes",
+        "state": "Hautes-Pyrénées",
+        "country": "France",
+        "postcode": 20341,
+        "coordinates": {
+          "latitude": "13.7614",
+          "longitude": "-119.7865"
+        },
+        "timezone": {
+          "offset": "+5:00",
+          "description": "Ekaterinburg, Islamabad, Karachi, Tashkent"
+        }
+      },
+      "email": "aymeric.fernandez@example.com",
+      "login": {
+        "uuid": "c6ac998c-f619-49d8-bb89-380f3dafb00b",
+        "username": "purpleelephant279",
+        "password": "havana",
+        "salt": "8WSL2v5v",
+        "md5": "e832ab9798b2e31228a5d0162485fcb3",
+        "sha1": "3670097d619205f9a36cc1d197cde6fca10fd884",
+        "sha256": "00d2fb5751de63ac0d09850473a95ffe22b3e6810caffb2c3268b4f97c30c3e9"
+      },
+      "dob": {
+        "date": "1957-07-09T02:48:17.919Z",
+        "age": 67
+      },
+      "registered": {
+        "date": "2002-06-12T01:21:03.546Z",
+        "age": 22
+      },
+      "phone": "03-07-59-70-00",
+      "cell": "06-85-36-99-29",
+      "id": {
+        "name": "INSEE",
+        "value": "1570643600321 81"
+      },
+      "picture": {
+        "large": "https://randomuser.me/api/portraits/men/90.jpg",
+        "medium": "https://randomuser.me/api/portraits/med/men/90.jpg",
+        "thumbnail": "https://randomuser.me/api/portraits/thumb/men/90.jpg"
+      },
+      "nat": "FR"
+    },
+    {
+      "gender": "female",
+      "name": {
+        "title": "Mrs",
+        "first": "Emelie",
+        "last": "Valla"
+      },
+      "location": {
+        "street": {
+          "number": 7997,
+          "name": "Furukollveien"
+        },
+        "city": "Fjellfoten",
+        "state": "Oppland",
+        "country": "Norway",
+        "postcode": "8072",
+        "coordinates": {
+          "latitude": "-36.9448",
+          "longitude": "-47.3890"
+        },
+        "timezone": {
+          "offset": "0:00",
+          "description": "Western Europe Time, London, Lisbon, Casablanca"
+        }
+      },
+      "email": "emelie.valla@example.com",
+      "login": {
+        "uuid": "19eb8308-bd08-4583-b901-f7ee1235f9a8",
+        "username": "purplesnake263",
+        "password": "babyboy",
+        "salt": "17l4s3PK",
+        "md5": "9760cfe87b0b921977886d5b598056fd",
+        "sha1": "dfa02f0e2679926baf3120a7e7199dae416734bc",
+        "sha256": "4aba8d27fc983313564375fe50e01083fea56269402e68726e516ce16890f97f"
+      },
+      "dob": {
+        "date": "1987-07-27T12:44:03.664Z",
+        "age": 37
+      },
+      "registered": {
+        "date": "2021-06-23T04:28:35.636Z",
+        "age": 3
+      },
+      "phone": "38710639",
+      "cell": "98424403",
+      "id": {
+        "name": "FN",
+        "value": "27078700683"
+      },
+      "picture": {
+        "large": "https://randomuser.me/api/portraits/women/49.jpg",
+        "medium": "https://randomuser.me/api/portraits/med/women/49.jpg",
+        "thumbnail": "https://randomuser.me/api/portraits/thumb/women/49.jpg"
+      },
+      "nat": "NO"
+    },
+    {
+      "gender": "female",
+      "name": {
+        "title": "Mrs",
+        "first": "Harmpje",
+        "last": "Martha"
+      },
+      "location": {
+        "street": {
+          "number": 9728,
+          "name": "De Klinker"
+        },
+        "city": "Midden-Delfland",
+        "state": "Flevoland",
+        "country": "Netherlands",
+        "postcode": "0133 MS",
+        "coordinates": {
+          "latitude": "22.2458",
+          "longitude": "-142.9586"
+        },
+        "timezone": {
+          "offset": "-12:00",
+          "description": "Eniwetok, Kwajalein"
+        }
+      },
+      "email": "harmpje.martha@example.com",
+      "login": {
+        "uuid": "4232796b-3f46-4fba-a755-d48a8b82b0dc",
+        "username": "goldenlion991",
+        "password": "rrrrrr",
+        "salt": "fGmNVrWt",
+        "md5": "dd04ce3db6d1ac584a7f306f817e91d1",
+        "sha1": "b967fe275f871adcac186307afaf7fd39fd94067",
+        "sha256": "31d91b735cf7ba3e54edb2967590ca6f7f195bccc7acc8143a4c7981f6d77658"
+      },
+      "dob": {
+        "date": "1997-03-11T14:58:39.018Z",
+        "age": 28
+      },
+      "registered": {
+        "date": "2017-11-27T09:55:27.172Z",
+        "age": 7
+      },
+      "phone": "(0345) 874308",
+      "cell": "(06) 21876258",
+      "id": {
+        "name": "BSN",
+        "value": "19242684"
+      },
+      "picture": {
+        "large": "https://randomuser.me/api/portraits/women/46.jpg",
+        "medium": "https://randomuser.me/api/portraits/med/women/46.jpg",
+        "thumbnail": "https://randomuser.me/api/portraits/thumb/women/46.jpg"
+      },
+      "nat": "NL"
+    },
+    {
+      "gender": "male",
+      "name": {
+        "title": "Mr",
+        "first": "Alívio",
+        "last": "de Souza"
+      },
+      "location": {
+        "street": {
+          "number": 1770,
+          "name": "Rua Belo Horizonte "
+        },
+        "city": "Juiz de Fora",
+        "state": "Distrito Federal",
+        "country": "Brazil",
+        "postcode": 50486,
+        "coordinates": {
+          "latitude": "-25.0131",
+          "longitude": "163.6368"
+        },
+        "timezone": {
+          "offset": "+6:00",
+          "description": "Almaty, Dhaka, Colombo"
+        }
+      },
+      "email": "alivio.desouza@example.com",
+      "login": {
+        "uuid": "265ffe8d-ccb7-4dac-845a-61eeb10e8717",
+        "username": "goldendog151",
+        "password": "goodgirl",
+        "salt": "n44N1E1m",
+        "md5": "89e41233cb570b41a89e60ecd4192698",
+        "sha1": "52108a3008dff99b47270f09e5a734b9aef9af39",
+        "sha256": "027bddf1cf580ec559ff89b4239ebcdb2bb35f878fe877b56e31a63c6812fae3"
+      },
+      "dob": {
+        "date": "1999-05-16T05:20:46.056Z",
+        "age": 26
+      },
+      "registered": {
+        "date": "2006-08-26T15:09:05.774Z",
+        "age": 18
+      },
+      "phone": "(21) 9638-1716",
+      "cell": "(59) 3302-1255",
+      "id": {
+        "name": "CPF",
+        "value": "455.537.612-86"
+      },
+      "picture": {
+        "large": "https://randomuser.me/api/portraits/men/80.jpg",
+        "medium": "https://randomuser.me/api/portraits/med/men/80.jpg",
+        "thumbnail": "https://randomuser.me/api/portraits/thumb/men/80.jpg"
+      },
+      "nat": "BR"
+    }
+  ],
+  "info": {
+    "seed": "b82804785b08c00a",
+    "results": 5,
+    "page": 1,
+    "version": "1.4"
+  }
+}
