@@ -1,11 +1,12 @@
 import { useEffect, useState } from "react";
-import { Link, useParams } from "react-router-dom";
+import { Link, useNavigate, useParams } from "react-router-dom";
 
 function View(props) {
   // 중첩된 라우팅에서 일련번호를 읽어오기 위한 훅
   let params = useParams();
   console.log('idx', params.idx);
-
+  const navigate = useNavigate();
+  
   // 열람 API는 JSON 객체이므로 빈 객체를 초기값으로 지정
   let [boardData, setBoardData] = useState({});
   // API 요청 주소
@@ -39,7 +40,35 @@ function View(props) {
       <Link to='/list'>목록</Link> &nbsp;
       {/* 수정 페이지로 진입시 일련번호가 필요하므로 링크를 수정한다. */}
       <Link to={'/edit/' + params.idx}>수정</Link> &nbsp;
-      <Link to='/delete'>삭제</Link>
+      <Link onClick={() => {
+        // 삭제를 누르면 confirm창을 먼저 띄워서 삭제여부를 물어본다.
+        if(window.confirm('삭제하시겠습니까?')) {
+          console.log('삭제idx', params.idx);
+          // 삭제API 호출
+          fetch('http://nakja.co.kr/APIs/php7/boardDeleteJSON.php', {
+            method: 'POST',
+            headers: {
+              'Content-type':'application/x-www-form-urlencoded;charset=UTF-8',
+            },
+            body: new URLSearchParams({
+              tname: 'nboard_news',
+              idx: params.idx,
+              apikey: 'c827aaa03d6375722014cbaa333416f2',
+            }),
+          })
+          .then((result) => result.json())
+          .then((json) => {
+            console.log(json);
+            // 삭제에 성공한 경우에는 목록으로 이동
+            if(json.result === 'success') {
+              alert('삭제되었습니다.');
+              navigate('/list');
+            } else {
+              alert('삭제에 실패했습니다.');
+            }
+          });
+        }
+      }}>삭제</Link>
     </nav>
 
     <article>
@@ -68,8 +97,10 @@ function View(props) {
               그대로 출력하는 것이 디폴트 설정이다. */}
             {/* <td>{boardData.content}</td> */}
             {/* 마크업이 적용된 상태로 출력됨 */}
+            {/* 이미지가 테이블의 크기보다 큰 경우에는 450px로 맞춰서 출력한다.
+              index.css에 설정되어 있다. */}
             <td dangerouslySetInnerHTML={{__html: boardData.content}}
-              style={{'whiteSpace' : 'pre-wrap'}}></td>
+              style={{'whiteSpace' : 'pre-wrap'}} className="tableImg"></td>
           </tr>
         </tbody>
       </table>
