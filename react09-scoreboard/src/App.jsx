@@ -65,11 +65,37 @@ function App() {
   }
 
   const deletePlayerProcess = (pIdx) => {
-    if(window.confirm('삭제할까요?')) {
-      const newPlayerData = playerData.filter(row => row.idx != pIdx);
-      setPlayerData(newPlayerData);
-      console.log('idx', pIdx);
-    }
+    console.log('삭제 idx', pIdx);
+    const newPlayerData = playerData.filter(row => row.idx != pIdx);
+    setPlayerData(newPlayerData);
+  }
+  
+  // 방법2 : reduce방법 사용
+  // const  deletePlayerProcess = (pIdx) => {
+  //   console.log('삭제 idx', pIdx);
+    
+  //   let newPlayerData = playerData.reduce((prev, curr) => {
+  //     if(curr.idx !== pIdx) {
+  //       prev.push(curr);
+  //     }
+  //     return prev;
+  //   }, []);
+  //   setPlayerData(newPlayerData);
+  // }
+
+  // 수정을 위한 함수
+  const editPlayerProcess = (idx, name) => {
+    console.log('수정', idx, name);
+    let newPlayersData = playerData.filter(row => {
+      // 수정할 선수의 idx와 일치하면 이름을 수정한다.
+      if(row.idx === idx) {
+        row.name = name;
+      }
+      // 여기서 반환한 객체를 통해 새로운 배열이 생성된다.
+      return row;
+    });
+    // 스테이트 변경 후 리렌더링
+    setPlayerData(newPlayersData);
   }
 
   return (
@@ -82,8 +108,10 @@ function App() {
           // 선수 한명의 정보를 담은 객체를 순차적으로 전달
           // unique한 key prop은 선수의 일련번호 사용
           // 점수변경을 위한 함수를 프롭스로 전달
+          // 선수 삭제를 위한 함수 전달
           <Player playerData={playerRow} key={playerRow.idx}
-            onChangeScore={scoreChangeProcess} deletePlayerProcess={deletePlayerProcess} />
+            onChangeScore={scoreChangeProcess} onDeltePlayer={deletePlayerProcess}
+            onEditPlayer={editPlayerProcess} />
         ))
       }
       {/* 새로운 선수 등록을 위한 입력폼 */}
