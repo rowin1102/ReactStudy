@@ -9,12 +9,14 @@ const Student = ({name, dispatch, id, isHere}) => {
   return (<>
     <div>
       {/* 학생의 이름을 클릭하면 출석 기능이 토글됨 */}
-      <span style={{}}
+      <span style={isHere ? {textDecoration: 'line-through', color: 'gray'} : {}}
         onClick={() => {
-          alert('출석처리');
+          dispatch({type:'mark', param:{id}});
         }}>{name}</span>
       <button onClick={() => {
-        alert('삭제');
+        if(window.confirm('삭제하시겠습니까?')) {
+          dispatch({type:'delete', param:{id}});
+        }
       }}>삭제</button>
     </div>
   </>);
@@ -36,17 +38,21 @@ const reducer = (state, action) => {
         students: [...state.students, newStudent],
       }
     case 'delete':
-      return {
-
-      }
-    case 'mark':
-      return {
-
-      }
+      const deleteStudent = state.students.filter(row => row.id !== action.param.id);
+        return {
+          count: state.count - 1,
+          students:deleteStudent,
+        }
+        case 'mark':
+          return {
+            count: state.count,
+            students: state.students.map(student => 
+              (student.id === action.param.id) ? {...student, isHere: !student.isHere} : student
+          ) 
+        }
     default:
   }
 }
-
 // 앱에서 사용할 데이터 객체로 학생수와 학생의 정보를 담은 배열로 정의
 const initialState =  {
   count : 1,
