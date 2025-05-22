@@ -1,40 +1,26 @@
-// 컴포넌트 임포트
-import CompState1 from "./commons/CompProps1";
-import CompContext1a from "./commons/CompContext1a";
-import CompContext1b from "./commons/CompContext1b";
-
-// 컨텍스트 파일 임포트
-import { SimpleContext } from "./context/SimpleContext";
-// useState 임포트
 import { useState } from "react";
 
+// 컨텍스트 임포트
+import { ThemeContext } from "./context/ThemeContext";
+import { SimpleContext } from "./context/SimpleContext";
+// 모듈화 된 컴포넌트 임포트
+import Page from './components/Page';
+
 export default function App() {
-  const [myNumber, setMyNumber] = useState(1);
+  // 테마변경을 위한 스테이트
+  const [isDark, setIsDark] = useState(false);
 
+  /* 데이터 공유를 위한 프로바이더는 2개 이상 겹쳐서 래핑할 수 있다. */
   return (<>
-    <h2>최상위 컴포넌트</h2>
-    {/* 스테이트로 선언한 myNumber의 값 변경 */}
-    <input type="number" value={myNumber} onChange={e => setMyNumber(e.target.value)} />
-
-    {/* 하위 컴포넌트로 프롭스를 통해 데이터 전달 */}
-    <div className="App">
-      <h3>Props를 통한 데이터 전달</h3>
-      <CompState1 propData={'Props로 전달되는 데이터'} myNumber={myNumber} />
-    </div>   
-
-    {/* 하위 컴포넌트로 전달하는 프롭스 없이 렌더링 */}
-    <div className="App">
-      <h3>useContext 적용</h3>
-      <CompContext1a />
-    </div>
-
-    {/* 컨텍스트 프로바이더를 이용해서 하위 컴포넌트를 랩핑한다. 그러면 하위 컴포넌트는
-      프로바이더가 제공하는 데이터를 공유할 수 있다. 이 부분은 Redux와 유사한 방식이다. */}
-    <SimpleContext.Provider value={{str:'Provider의 초기값', num:myNumber}}>
+    {/* SimpleContext를 주석 처리하면 모듈에서 초기화 한 값이 출력되고, 활성화하면
+      value 속성으로 부여한 값이 출력된다. 즉, 프로바이더로 랩핑하여 value로 적용한 값이
+      우선순위가 높다. */}
+    {/* <SimpleContext.Provider value={'Welcome 형딜동'}> */}
+    <ThemeContext.Provider value={{isDark, setIsDark}}>
       <div className="App">
-        <h3>useContext 적용 및 Provider 래핑</h3>
-        <CompContext1b />
+        <Page />
       </div>
-    </SimpleContext.Provider>
-  </>); 
+    </ThemeContext.Provider>
+    {/* </SimpleContext.Provider> */}
+  </>);
 }
