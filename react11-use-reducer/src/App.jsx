@@ -9,11 +9,15 @@ const Student = ({name, dispatch, id, isHere}) => {
   return (<>
     <div>
       {/* 학생의 이름을 클릭하면 출석 기능이 토글됨 */}
+      {/* 학생이 출석한 상태라면 가운데 줄과 회색으로 변경되므로 스타일 속성을 추가함.
+        이 상태는 isHere에 따라 토글된다. */}
       <span style={isHere ? {textDecoration: 'line-through', color: 'gray'} : {}}
         onClick={() => {
+          // 디스패치 함수 호출시 액션객체를 전달해서 상태 변경. 이때 리듀서 함수가 실행된다.
           dispatch({type:'mark', param:{id}});
         }}>{name}</span>
       <button onClick={() => {
+        // 삭제버튼을 누르면 confirm으로 확인 후 삭체처리를 위해 함수 호출
         if(window.confirm('삭제하시겠습니까?')) {
           dispatch({type:'delete', param:{id}});
         }
@@ -37,19 +41,23 @@ const reducer = (state, action) => {
         count: state.count + 1,
         students: [...state.students, newStudent],
       }
+    // 학생 삭제
     case 'delete':
-      const deleteStudent = state.students.filter(row => row.id !== action.param.id);
         return {
           count: state.count - 1,
-          students:deleteStudent,
+          /* filter 함수를 이용해서 삭제할 학생을 제외한 나머지 객체를 밚환하도록 
+            정의한 후 반환값을 통해 업데이트 한다. 
+            화살표함수는 매개변수가 1개인 경우 소괄호 생략이 가능하고, 반환값이
+            1줄인 경우 줄괄호와 return을 생략할 수 있다. */
+          students: state.students.filter(student => student.id !== action.param.id)
         }
-        case 'mark':
-          return {
-            count: state.count,
-            students: state.students.map(student => 
-              (student.id === action.param.id) ? {...student, isHere: !student.isHere} : student
-          ) 
-        }
+    case 'mark':
+      return {
+        count: state.count,
+        students: state.students.map(student => 
+          (student.id === action.param.id) ? {...student, isHere: !student.isHere} : student
+        ) 
+      }
     default:
   }
 }
