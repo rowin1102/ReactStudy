@@ -1,95 +1,75 @@
 import { firestore } from "./firestoreConfig";
-import { doc, deleteDoc, getDoc, collection, getDocs } from "firebase/firestore";
-import { useEffect, useState } from "react";
+import { doc, getDoc, collection, getDocs, query, where } from "firebase/firestore";
+import { useState } from "react";
 
 export default function App() {
   const [showData, setShowData] = useState([]);
 
-  // 기존의 도큐먼트를 불러와서 select 태그에 설정
-  useEffect(() => {
-    const getCollection = async () => {
-    let trArray = [];
-    const querySnapshot = await getDocs(collection(firestore, 'members'));
-    
-    querySnapshot.forEach(doc => {
-      let memberInfo = doc.data();
-      
-      trArray.push(
-        <option key={doc.id} value={doc.id}>{memberInfo.name}</option>
-      );
-    });
-    return trArray;
+  const getCollection = async (sField, sStr) => {
+    console.log('선택', sField);
+    let getRows = [];
+
+    if(sField === 'id') {
+      const docRef = doc(firestore, 'members', sStr);
+      const docSnap = await getDoc(docRef);
+      if(docSnap.exists()) {
+        getRows.push(docSnap.data());
+      } else {
+        console.log('No such document!');
+      }
+    } else if(sField === 'name') {
+      const membersRef = collection(firestore, 'members');
+      const p = query(membersRef, where('name', '==', sStr));
+      const querySnapshot = await getDocs(p);
+      querySnapshot.forEach(doc => {
+        console.log('반복인출', doc.id, doc.data());
+        getRows.push(doc.data());
+      });
     }
 
-    getCollection().then(result => {
-      console.log('result', result);
-      setShowData(result);
+    let trArray = [];
+    console.log('getRows', getRows);
+    getRows.forEach(row => {
+      trArray.push(
+        <tr key={row.id}>
+          <td className="cen">{row.id}</td>
+          <td className="cen">{row.pass}</td>
+          <td className="cen">{row.name}</td>
+          <td className="cen">{row.regdate}</td>
+        </tr>
+      );
     });
-  }, []);
-
-  const [id, setId] = useState('');
-  const [pass, setPass] = useState('');
-  const [name, setName] = useState('');
+    setShowData(trArray);
+  }
 
   return (<>
     <h2>Firebase - Firestore 연동 App</h2>
-    <h3>개별 조회 및 삭제하기</h3>
-
-    <form onSubmit={async e => {
+    <h3>검색하기</h3>
+    <form onSubmit={e => {
       e.preventDefault();
-      let id = e.target.id.value;
-      console.log('삭제', id);
-      if(id === '') {alert('사용자를 먼저 선택해주세요'); return;}
-
-      /* 선택한 아이디로 도큐먼트의 참조를 얻은 후에 deleteDoc 함수를 실행해서 삭제한다. */
-      await deleteDoc(doc(firestore, 'members', e.target.id.value));
-      setId('');
-      setPass('');
-      setName('');
+      let sf = e.target.searchField.value;
+      let ss = e.target.searchStr.value;
+      getCollection(sf, ss);
     }}>
       <div className="input-group"  id="myForm">
-        <select onChange={async e => {
-          // select에서 선택한 항목의 데이터를 불러와서 input에 설정
-          let user_id = e.target.value;
-
-          const docRef = doc(firestore, 'members', user_id);
-          const docSnap = await getDoc(docRef);
-
-          if(docSnap.exists()) {
-            let callData = docSnap.data();
-            setId(user_id);
-            setPass(callData.pass);
-            setName(callData.name);
-          } else {
-            console.log('No such document!');
-          }
-        }}>
-          <option value="">선택하세요</option>
-          {showData}
+        <select name="searchField" className="form-control">
+          <option value="id">아이디</option>
+          <option value="name">이름</option>
         </select>
-        <button type="submit" className="btn btn-danger">삭제</button>
+        <input type="text" name="searchStr" className="form-control" />
+        <button type="submit" className="btn btn-danger">전체조회</button>
       </div>
-
-      <table className="table table-bordered">
-      <tbody>
-        <tr>
-          <td>컬렉션(테이블)</td>
-          <td><input type="text" name="collection" value='members' className="form-control" /></td>
-        </tr>
-        <tr>
-          <td>아이디</td>
-          <td><input type="text" name="id" value={id} className="form-control" /></td>
-        </tr>
-        <tr>
-          <td>비밀번호</td>
-          <td><input type="text" name="pass" value={pass} className="form-control" /></td>
-        </tr>
-        <tr>
-          <td>이름</td>
-          <td><input type="text" name="name" value={name} className="form-control" /></td>
-        </tr>
-      </tbody>
-      </table>
     </form>
+
+    <table className="table table-bordered" border='1'>
+      <thead>
+        <tr className="text-center">
+          <th>아이디</th><th>비밀번호</th><th>이름</th><th>가입일</th>
+        </tr>
+      </thead>
+      <tbody>
+        {showData}
+      </tbody>
+    </table>
   </>); 
 }

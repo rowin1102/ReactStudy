@@ -3,18 +3,6 @@ import { initializeApp } from "firebase/app";
 // 파이어스토어 데이터베이스 사용을 위한 임포트
 import { getFirestore } from "firebase/firestore";
 
-// .env 생성 전
-// 파이어베이스 콘솔에서 발급받은 API정보(SDK 정보)
-// const firebaseConfig = {
-//   apiKey: "AIzaSyAF2gRJXpRnuBMYOmkVL6nw7reDF-rTt_Q",
-//   authDomain: "myreactapp-debab.firebaseapp.com",
-//   projectId: "myreactapp-debab",
-//   storageBucket: "myreactapp-debab.firebasestorage.app",
-//   messagingSenderId: "1016327815493",
-//   appId: "1:1016327815493:web:020d9fa61ce44c2830be2c",
-//   measurementId: "G-N0N2F364Z0"
-// };
-
 // .env 생성 후
 const firebaseConfig = {
   apiKey: import.meta.env.VITE_apiKey,
