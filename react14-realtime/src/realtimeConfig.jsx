@@ -1,6 +1,6 @@
   // 파이어베이스 서비스에 연결하기 위한 임포트
 import { initializeApp } from "firebase/app";
-// 파이어스토어 데이터베이스 사용을 위한 임포트
+// realtime 데이터베이스 사용을 위한 임포트
 import { getDatabase } from "firebase/database";
 
 // .env 생성 후
