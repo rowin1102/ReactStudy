@@ -1,86 +1,48 @@
+// 파이어스토어 객체 임포트
 import { firestore } from "./firestoreConfig";
-import { doc, getDoc, collection, getDocs, query, where } from "firebase/firestore";
-import { useState } from "react";
+// 새로운 도큐먼트(문서)를 입력하거나 읽을때 사용하는 함수 임포트
+import { doc, getDoc, setDoc } from "firebase/firestore";
 
 export default function App() {
-  const [showData, setShowData] = useState([]);
+  // 파이어스토어 연결 확인
+  console.log('firestore', firestore);
 
-  const getCollection = async (sField, sStr) => {
-    console.log('선택', sField);
-    let getRows = [];
-
-    if(sField === 'id') {
-      /* 아이디를 통한 검색은 도큐먼트를 찾는 것으로 구현한다. 이 앱은 아이디를
-        도큐먼트명으로 사용했기 때문에 이렇게 구현할 수 있다. */
-      const docRef = doc(firestore, 'members', sStr);
-      // 참조값을 통해 도큐먼트를 찾는다.
-      const docSnap = await getDoc(docRef);
-      if(docSnap.exists()) {
-        // 찾은 데이터를 배열에 추가한다.
-        getRows.push(docSnap.data());
-      } else {
-        console.log('No such document!');
-      }
-    } else if(sField === 'name') {
-      /* 이름으로 검색하는 경우에는 where, query 함수를 사용한다.
-        먼저 컬렉션을 얻어온다. */
-      const membersRef = collection(firestore, 'members');
-      /* where 함수는 조건에 맞는 데이터를 검색한다. 이를 통해 query 함수를 실행하여
-        도큐먼트를 얻어온다. */
-      const p = query(membersRef, where('name', '==', sStr));
-      // 조건에 일치하는 도큐먼트는 2개 이상일 수 있으므로 forEach를 사용한다.
-      const querySnapshot = await getDocs(p);
-      querySnapshot.forEach(doc => {
-        console.log('반복인출', doc.id, doc.data());
-        getRows.push(doc.data());
-      });
-    }
-
-    // UI에 표시할 항목을 만들어 준다.
-    let trArray = [];
-    console.log('getRows', getRows);
-    getRows.forEach(row => {
-      trArray.push(
-        <tr key={row.id}>
-          <td className="cen">{row.id}</td>
-          <td className="cen">{row.pass}</td>
-          <td className="cen">{row.name}</td>
-          <td className="cen">{row.regdate}</td>
-        </tr>
-      );
+  // 도큐먼트 추가 함수
+  const addMessage = async () => {
+    /* 컬렉션 : 테이블과 유사함. Korea로 작성.
+      도큐먼트 : 레코드와 유사함. Seoul로 작성
+      하위 데이터는 JS 객체 형식으로 작성하면 된다. 테이블처럼 정형화된 것이 아니므로
+      원하는데로 객체에 정보를 추가할 수 있다.
+      
+      문서추가를 위해 setDoc(document정보, 추가할 데이터)와 같은 형식으로 실행
+      */
+    await setDoc(doc(firestore, 'Korea', 'Incheon'), {
+      gu: '남동구',
+      dong: '구월동',
+      hotplace: '롯데백화점',
     });
-    setShowData(trArray);
+    console.log('입력성공');
+  }
+
+  // 도큐먼트 읽기 함수
+  const getMessage = async () => {
+    // 입력된 컬렉션과 도큐먼트를 통해 문서의 참조를 읽어온다.
+    const docRef = doc(firestore, 'Korea', 'Seoul');
+    // 참조를 통해 도큐먼트를 얻어온다
+    const docSnap = await getDoc(docRef);
+
+    // 해당 도큐먼트가 존재하면 콘솔에 내용을 출력한다.
+    if(docSnap.exists()) {
+      console.log('Document data:', docSnap.data());
+    } else {
+      console.log('No such document!');
+    }
   }
 
   return (<>
     <h2>Firebase - Firestore 연동 App</h2>
-    <h3>검색하기</h3>
-    <form onSubmit={e => {
-      e.preventDefault();
-      let sf = e.target.searchField.value;
-      let ss = e.target.searchStr.value;
-      // 폼값을 submit하면 입력값을 받은 후 검색을 위한 함수를 호출한다.
-      getCollection(sf, ss);
-    }}>
-      <div className="input-group"  id="myForm">
-        <select name="searchField" className="form-control">
-          <option value="id">아이디</option>
-          <option value="name">이름</option>
-        </select>
-        <input type="text" name="searchStr" className="form-control" />
-        <button type="submit" className="btn btn-danger">전체조회</button>
-      </div>
-    </form>
-
-    <table className="table table-bordered" border='1'>
-      <thead>
-        <tr className="text-center">
-          <th>아이디</th><th>비밀번호</th><th>이름</th><th>가입일</th>
-        </tr>
-      </thead>
-      <tbody>
-        {showData}
-      </tbody>
-    </table>
+    <h3>Firebase 연결</h3>
+    <input type="button" value="입력" onClick={addMessage} />
+    <input type="button" value="읽기" onClick={getMessage} />
   </>); 
 }
