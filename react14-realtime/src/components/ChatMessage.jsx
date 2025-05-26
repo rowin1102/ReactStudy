@@ -20,7 +20,7 @@ export default function ChatMessage() {
   // 쿼리스트링으로 전달된 파라미터를 조작할때 사용하는 라우터 훅
   const [searchParams, setSearchParams] = useSearchParams();
   // 방명, 대화명을 파라미터로 얻어온다.
-  const roodId = searchParams.get('roomId');
+  const roomId = searchParams.get('roomId');
   const userId = searchParams.get('userId');
   // 채팅 내역이 보여지는 부분의 DOM 참조
   const chatWindow = useRef();
@@ -43,10 +43,16 @@ export default function ChatMessage() {
 
   /* Realtime 리스너 정의. 새롭게 입력된 대화내용을 실시간으로 얻어온다. 채팅 내역이 저장된 'room1' 노드를
     참조하는 변수를 생성 후 사용한다. */
-  const dbRef = ref(realtime, roodId);
+  const dbRef = ref(realtime, roomId);
   useEffect(() => {
     // 리스너 생성. 새로운 대화내역이 확인되는 즉시 이벤트가 발생된다.
     onValue(dbRef, snapshot => {
+      // 새로운 메세지 추가시 스크롤바가 최하단으로 이동하지 않는 문제 해결.
+      // onValue가 작동한 0.1초 후에 스크롤바를 내리는 함수를 강제실행한다.
+      setTimeout(() => {
+        scrollTop(chatWindow.current);
+      }, 100);
+
       let showDiv = [];
       // 대화내역 전체(snapshot)를 배열로 받은 후 반복
       snapshot.forEach(childSnapshot => {
@@ -65,7 +71,7 @@ export default function ChatMessage() {
           showDiv.push(<div>{childData.message}</div>)
         }
         // 스크롤바를 최하단으로 내려준다.
-        scrollTop(chatWindow.current);
+        // scrollTop(chatWindow.current);
       });
       // 스테이트를 변경해서 대화내역을 새롭게 렌더링한다.
       setChatData(showDiv);
@@ -103,7 +109,7 @@ export default function ChatMessage() {
         e.target.message.value = '';
       }}>
         {/* 룸명과 아이디는 hidden 상자로 표시 */}
-        <input type="hidden" name="chatRoom" value={roodId} />
+        <input type="hidden" name="chatRoom" value={roomId} />
         <input type="hidden" name="chatId" value={userId} />
         {/* 메세지 입력상자와 전송 버튼 표시 */}
         <input type="text" name='message' />

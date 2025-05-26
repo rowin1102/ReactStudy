@@ -29,7 +29,7 @@ export default function ChatStart() {
     {/* input에 앞에서 생성한 Ref변수를 추가하여 DOM에 접근한다.
       이렇게하면 getElementXX와 같은 함수 없이 쉽게 접근할 수 있다. */}
     {/* 대화방의 아이디는 room1로 고정한다. 단, 필요하다면 변경하거나 입력하면 된다. */}
-    방병 : <input type="text" name='roodId' value='room1' ref={refRoom} /> <br />
+    방명 : <input type="text" name='roodId' value='room1' ref={refRoom} /> <br />
     대화명 : <input type="text" name='userId' ref={refId} /> <br />
     {/* 버튼을 누르면 팝업으로 대화창을 오픈한다. */}
     <button type="button" onClick={openChatWin}>채팅시작</button> 
