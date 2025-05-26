@@ -1,29 +1,35 @@
 import { useEffect } from "react";
 import { storage } from "./storageConfig";
-import { ref, listAll, deleteObject } from "firebase/storage";
+import { ref, listAll, getDownloadURL } from "firebase/storage";
 import { useState } from "react";
 
 export default function App() {
+  // 스토리지 연결 및 root 경로로 참조객체 생성
   const listRef = ref(storage, '');
   
-  const [fileLists, setFileLists] = useState([]);
-
-  useEffect(() => { 
+  useEffect(() => {
     let fileRows = [];
+    // 생성된 스토리지 root 경로의 참조객체를 통해 모든 폴더와 파일명 인출
     listAll(listRef)
       .then(res => {
+        // 콜백데이터 res를 통해 prefixes를 사용하면 폴더명을 배열로 인출
         res.prefixes.forEach(folderRef => console.log('폴더', folderRef.name));
+        // items를 통해 파일명을 배열형식으로 인출
         res.items.forEach(itemRef => {
           console.log('파일명', itemRef.name);
 
+          // 파일의 다운로드 URL을 비동기로 얻어온다. 파일명을 통해 참조 생성
           getDownloadURL(ref(storage, itemRef.name))
             .then(url => {
               console.log('파일 URL 다운로드');
+              // img 태그에 부여된 id를 통해 DOM을 얻어온다.
               const img = document.getElementById(`img_${itemRef.name}`);
+              // img 태그에 src, width 속성값을 부여한다.
               img.setAttribute('src', url);
               img.setAttribute('width', '100');
             })
             .catch(error => console.log('이미지 다운로드 중 에러', error));
+          // 파일의 목록생성. 최초 생성시에는 src속성 없이 출력한다.
           fileRows.push(
             <tr key={itemRef.name}>
               <td>{itemRef.bucket}</td>
@@ -33,11 +39,14 @@ export default function App() {
             </tr>
           );
         });
+        // 완성된 파일목록을 통해 스테이트 변경0
         setFileLists(fileRows);
       })
       .catch(error => console.log('파일 목록 출력중 에러발생', error));
   }, []);
 
+  // 스토리지에서 얻어온 파일목록을 저장한 스테이트 생성
+  const [fileLists, setFileLists] = useState([]);
   console.log('렌더링');
 
   return (<>
@@ -53,6 +62,7 @@ export default function App() {
         </tr>
       </thead>
       <tbody>
+        {/* 1차 렌더링 후 useEffect에서 얻어온 파일 목록이 출력됨 */}
         {fileLists}
       </tbody>
     </table>
