@@ -6,40 +6,8 @@ import { useRef, useState } from 'react';
 
 import '../design/login.css'
 
-const membersWrite = async (p_collection, p_username, p_password, p_name, 
-  p_email, p_phone, p_zipcode, p_address) => {
-  
-  await setDoc(doc(firestore, p_collection, p_username), {
-    username: p_username,
-    password: p_password,
-    name: p_name,
-    email: p_email,
-    phone: p_phone,
-    zipcode: p_zipcode,
-    address: p_address,
-  });
-  console.log('입력성공');
-}
-
-const handleEmailSelect = (e) => {
-  const selected = e.target.value;
-  const emailDomainInput = document.getElementById("signup-email-domain");
-  
-  if (selected === "custom") {
-    emailDomainInput.value = "";
-    emailDomainInput.readOnly = false;
-    emailDomainInput.focus();
-  } else {
-    emailDomainInput.value = selected;
-    emailDomainInput.readOnly = true;
-  }
-};
-
-
-
 const Signup = () => {
   const navigate = useNavigate();
-  console.log('fire', firestore);
 
   const [username, setUsername] = useState('');
   const [userCheck, setUserCheck] = useState(null);
@@ -48,6 +16,47 @@ const Signup = () => {
   const middlePhoneRef = useRef();
   const lastPhoneRef = useRef();
   const passwordRef = useRef();
+  const zipRef = useRef(null);
+  const addrRef = useRef(null);
+  const detailRef = useRef(null);
+  
+  const handlePhoneInput = (e, maxLength, nextRef) => {
+    if(e.target.value.length >= maxLength) {
+      nextRef?.current?.focus();
+    }
+  }
+
+  const handleEmailSelect = (e) => {
+    const selected = e.target.value;
+    const emailDomainInput = document.getElementById("signup-email-domain");
+    
+    if (selected === "custom") {
+      emailDomainInput.value = "";
+      emailDomainInput.readOnly = false;
+      emailDomainInput.focus();
+    } else {
+      emailDomainInput.value = selected;
+      emailDomainInput.readOnly = true;
+    }
+  };
+
+  const handlePostcodeSearch = () => {
+    new window.daum.Postcode({
+      oncomplete: function (data) {
+        let addr = "";
+
+        if (data.userSelectedType === "R") {
+          addr = data.roadAddress;
+        } else {
+          addr = data.jibunAddress;
+        }
+
+        if (zipRef.current) zipRef.current.value = data.zonecode;
+        if (addrRef.current) addrRef.current.value = addr;
+        if (detailRef.current) detailRef.current.focus();
+      },
+    }).open();
+  };
 
   const checkUsername = async () => {
     if(!username.trim()){
@@ -55,34 +64,42 @@ const Signup = () => {
       return;
     }
 
-    try{
-      const docRef = doc(firestore, 'members', username);
-      const docSnap = await getDoc(docRef);
+    const docRef = doc(firestore, 'members', username);
+    const docSnap = await getDoc(docRef);
 
-      if(docSnap.exists()) {
-        setUserCheck('duplicate');
-      } else {
-        setUserCheck('available');
-        passwordRef.current?.focus();
-      }
-    }
-    catch(error) {
-      console.error("중복 확인 중 오류 발생:", error);
-      alert("오류가 발생했습니다. 다시 시도해 주세요.");
+    if(docSnap.exists()) {
+      setUserCheck('duplicate');
+    } else {
+      setUserCheck('available');
+      passwordRef.current?.focus();
     }
   }
 
-
-  const handlePhoneInput = (e, maxLength, nextRef) => {
-    if(e.target.value.length >= maxLength) {
-      nextRef?.current?.focus();
-    }
+  const membersWrite = async (p_collection, p_username, p_password, p_name, 
+    p_email, p_phone, p_zipcode, p_address) => {
+    
+    await setDoc(doc(firestore, p_collection, p_username), {
+      username: p_username,
+      password: p_password,
+      name: p_name,
+      email: p_email,
+      phone: p_phone,
+      zipcode: p_zipcode,
+      address: p_address,
+    });
+    console.log('입력성공');
   }
 
   const submitHandle =  async (e) => {
     e.preventDefault();
-
     const form = e.target;
+
+    if (userCheck === 'duplicate') {
+      alert('이미 사용 중인 아이디입니다. 다른 아이디를 입력하세요.');
+      form.username.focus();
+      return;
+    }
+
     const requiredFields = [
       { name: "username", label: "아이디" },
       { name: "password", label: "비밀번호" },
@@ -124,12 +141,21 @@ const Signup = () => {
     const detailAddress = form.detailAddress.value;
     const totalAddress = `${address} (${detailAddress})`;
     
-    await membersWrite(collection, username, password, name, email, phone, zipcode, totalAddress);
-    alert('회원가입이 완료되었습니다!');
+    if(!form.emailDomain.value.includes('.')) {
+      alert('이메일 형식이 아닙니다.');
+      form.emailDomain.focus();
+      return;
+    }
     
-    form.reset();
-    
-    navigate('/');
+    if(userCheck === 'available') {
+      await membersWrite(collection, username, password, name, email, phone, zipcode, totalAddress);
+      alert('회원가입이 완료되었습니다!');
+      form.reset();
+      navigate('/login');
+    } else {
+      alert('중복확인을 해주세요');
+      return;
+    }
   }
   
   return (
@@ -192,17 +218,18 @@ const Signup = () => {
             <tr>
               <td><label htmlFor="signup-zipcode">우편번호</label></td>
               <td>
-                <input type="text" id="signup-zipcode" name="zipcode" />
-                <button type="button" id="signup-zipcode-search-button">우편번호 찾기</button>
+                <input type="text" id="signup-zipcode" name="zipcode" ref={zipRef} />
+                <button type="button" id="signup-zipcode-search-button" 
+                  onClick={handlePostcodeSearch}>우편번호 찾기</button>
               </td>
             </tr>
             <tr>
               <td><label htmlFor="signup-address">기본주소</label></td>
-              <td><input type="text" id="signup-address" name="address" /></td>
+              <td><input type="text" id="signup-address" name="address" ref={addrRef} /></td>
             </tr>
             <tr>
               <td><label htmlFor="signup-detail-address">상세주소</label></td>
-              <td><input type="text" id="signup-detail-address" name="detailAddress" /></td>
+              <td><input type="text" id="signup-detail-address" name="detailAddress" ref={detailRef} /></td>
             </tr>
           </tbody>
         </table>

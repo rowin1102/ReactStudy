@@ -152,3 +152,8 @@ body {
 #signup-form #signup-email-domain {
   width: 130px;
 }
+
+#signup-form #signup-zipcode {
+  width: 100px;
+  margin-right: 10px;
+}
