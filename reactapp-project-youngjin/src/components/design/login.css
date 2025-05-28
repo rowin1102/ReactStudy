@@ -1,0 +1,154 @@
+:root {
+  --primary-color: #4EA685;
+  --secondary-color: #57B894;
+  --white: #ffffff;
+  --gray: #efefef;
+  --gray-dark: #757575;
+}
+
+/* 공통 스타일 */
+body {
+  font-family: 'Poppins', sans-serif;
+  background-color: var(--gray);
+  margin: 0;
+  padding: 0;
+}
+
+/* 로그인 */
+#login-page-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh;
+  padding-bottom: 100px;
+}
+
+#login-form {
+  background-color: var(--white);
+  padding: 2rem;
+  border-radius: 1rem;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+#login-form-title {
+  text-align: center;
+  margin-bottom: 1.5rem;
+}
+
+#login-form-table {
+  width: 100%;
+  margin-bottom: 1rem;
+}
+
+#login-form-table td {
+  padding: 0.5rem;
+}
+
+#login-form input {
+  width: 100%;
+  padding: 0.5rem;
+  border: 1px solid var(--gray-dark);
+  border-radius: 0.5rem;
+}
+
+#login-submit-button {
+  width: 100%;
+  padding: 0.75rem;
+  background-color: var(--primary-color);
+  color: var(--white);
+  border: none;
+  border-radius: 0.5rem;
+  font-size: 1rem;
+  cursor: pointer;
+}
+
+#login-signup-link {
+  text-align: center;
+  margin-top: 1rem;
+  font-size: 0.9rem;
+}
+
+/* 회원가입 */
+#signup-page-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh;
+  padding-bottom: 80px;
+}
+
+#signup-form {
+  background-color: var(--white);
+  padding: 2rem;
+  border-radius: 1rem;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+#signup-form-title {
+  text-align: center;
+  margin-bottom: 1.5rem;
+}
+
+#signup-form-table {
+  width: 100%;
+  margin-bottom: 1rem;
+}
+
+#signup-form-table td {
+  padding: 0.5rem;
+  vertical-align: middle;
+}
+
+#signup-form input,
+#signup-form select {
+  padding: 0.5rem;
+  border: 1px solid var(--gray-dark);
+  border-radius: 0.5rem;
+  width: auto;
+  margin-right: 0.25rem;
+}
+
+#signup-id-check-button,
+#signup-zipcode-search-button {
+  padding: 0.5rem 0.75rem;
+  background-color: var(--secondary-color);
+  color: var(--white);
+  border: none;
+  border-radius: 0.5rem;
+  cursor: pointer;
+  font-size: 0.85rem;
+}
+
+#signup-submit-button {
+  width: 100%;
+  padding: 0.75rem;
+  background-color: var(--primary-color);
+  color: var(--white);
+  border: none;
+  border-radius: 0.5rem;
+  font-size: 1rem;
+  cursor: pointer;
+}
+
+#signup-login-link {
+  text-align: center;
+  margin-top: 1rem;
+  font-size: 0.9rem;
+}
+
+#signup-form #signup-phone-first {
+  width: 70px;
+}
+
+#signup-form #signup-phone-middle,
+#signup-form #signup-phone-last {
+  width: 90px;
+}
+
+#signup-form #signup-email-id {
+  width: 180px;
+}
+
+#signup-form #signup-email-domain {
+  width: 130px;
+}
