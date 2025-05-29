@@ -30,10 +30,10 @@ export default function App() {
       <Route path='/' element={<Home info={info} />} />
       <Route path='/login' element={<Login setInfo={setInfo} info={info} />} />
       <Route path='/signup' element={<SignUp />} />
+      <Route path='/edit' element={<Edit info={info} />} />
       <Route path='/freeboard' element={<FreeBoard />} />
       <Route path='/qna' element={<QnA />} />
       <Route path='/reference' element={<Reference />} />
-      <Route path='/edit' element={<Edit />} />
     </Routes>
   </>); 
 }
