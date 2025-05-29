@@ -1,39 +1,73 @@
 import {Routes, Route} from 'react-router-dom';
 
-import Navi from "./components/navigation/Navi";
+import TopNavi from "./components/navigation/TopNavi";
 import Home from "./components/Home";
 import Login from './components/members/Login';
 import SignUp from './components/members/SignUp';
-import FreeBoard from "./components/board/FreeBoard";
-import QnA from "./components/board/QnA";
-import Reference from './components/board/Reference';
 import Edit from './components/members/Edit';
+import FBList from './components/Freeboard/FBList';
+import FBView from './components/freeboard/FBView';
+import FBWrite from './components/freeboard/FBWrite';
+import QnAList from './components/qna/QnAList';
+import RList from './components/reference/RList';
 
 import './components/design/bootstrap.min.css';
 import './components/design/style.css';
 import './components/design/tiny-slider.css';
+
 import { useEffect, useState } from 'react';
 
+const nowDate = () => {
+  const date = new Date();
+
+  return date.toISOString().slice(0, 16).replace('T', ' ');
+}
+
+const formatDate = (dateStr) => {
+  const now = new Date();
+  const target = new Date(dateStr);
+
+  const pad = (n) => n.toString().padStart(2, '0');
+
+  const isSameDay =
+    now.getFullYear() === target.getFullYear() &&
+    now.getMonth() === target.getMonth() &&
+    now.getDate() === target.getDate();
+
+  const year = target.getFullYear();
+  const month = pad(target.getMonth() + 1);
+  const day = pad(target.getDate());
+  const hour = pad(target.getHours());
+  const minute = pad(target.getMinutes());
+
+  return isSameDay
+    ? `${year}-${month}-${day} ${hour}:${minute}`
+    : `${year}-${month}-${day}`;
+};
+
+
 export default function App() {
-  const [info, setInfo] = useState(null);
+  const [id, setId] = useState(null);
 
   useEffect(() => {
-    const saved = localStorage.getItem("loginInfo");
+    const saved = localStorage.getItem("loginID");
     if (saved) {
-      setInfo(JSON.parse(saved));
+      setId(JSON.parse(saved));
     }
   }, []);
 
   return (<>
-    <Navi info={info} setInfo={setInfo} />
+    <TopNavi id={id} setId={setId} />
     <Routes>
-      <Route path='/' element={<Home info={info} />} />
-      <Route path='/login' element={<Login setInfo={setInfo} info={info} />} />
+      <Route path='/' element={<Home id={id} />} />
+      <Route path='/login' element={<Login setId={setId} id={id} />} />
       <Route path='/signup' element={<SignUp />} />
-      <Route path='/edit' element={<Edit info={info} />} />
-      <Route path='/freeboard' element={<FreeBoard />} />
-      <Route path='/qna' element={<QnA />} />
-      <Route path='/reference' element={<Reference />} />
+      <Route path='/edit' element={<Edit id={id} />} />
+      <Route path='/fbList' element={<FBList />} />
+      <Route path='/fbView/:no' element={<FBView />} />
+      <Route path='/fbWrite' element={<FBWrite nowDate={nowDate} formatDate={formatDate} />} />
+      <Route path='/qnaList' element={<QnAList />} />
+      <Route path='/rList' element={<RList />} />
     </Routes>
   </>); 
 }

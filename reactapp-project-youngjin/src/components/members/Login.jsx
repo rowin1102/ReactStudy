@@ -6,7 +6,7 @@ import { doc, getDoc } from 'firebase/firestore';
 import { useEffect, useRef, useState } from 'react';
 
 const Login = (props) => {
-  const {setInfo, info} = props;
+  const {id, setId} = props;
 
   const navigate = useNavigate();
   const usernameRef = useRef();
@@ -52,8 +52,8 @@ const Login = (props) => {
     const data = docSnap.data();
     if(data.password === password) {
       console.log('로그인 성공', data);
-      setInfo({username});
-      localStorage.setItem("loginInfo", JSON.stringify({username}));
+      setId({username});
+      localStorage.setItem("loginID", JSON.stringify({username}));
       alert(`${username}님 환영합니다.`);
       navigate('/');
     } else {
@@ -63,8 +63,8 @@ const Login = (props) => {
   }
 
   useEffect(() => {
-    console.log("로그인된 사용자:", info);
-  }, [info]);
+    console.log("로그인된 사용자:", id);
+  }, [id]);
 
   return (
     <div id="login-page-container">

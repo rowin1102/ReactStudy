@@ -1,0 +1,208 @@
+/* 네비게이션 */
+#fb-nav-container {
+  background-color: #f8f9fa;
+  padding: 20px 40px;
+  border-bottom: 1px solid #ddd;
+}
+
+#fb-nav {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+#fb-write-button {
+  float: right;
+  background-color: #0d6efd;
+  color: white;
+  padding: 6px 14px;
+  text-decoration: none;
+  border-radius: 4px;
+  font-size: 14px;
+  margin-top: -40px;
+  margin-bottom: -35px;
+}
+
+#fb-write-button:hover {
+  background-color: #0b5ed7;
+}
+
+/* 공통 wrapper */
+.fb-wrapper {
+  padding: 40px;
+}
+
+/* 게시글 목록 테이블 */
+.fb-table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-bottom: 20px;
+}
+
+.fb-table th,
+.fb-table td {
+  padding: 12px;
+  border: 1px solid #ccc;
+  text-align: center;
+}
+
+.fb-table a {
+  color: #0d6efd;
+  text-decoration: none;
+}
+
+.fb-table a:hover {
+  text-decoration: underline;
+}
+
+/* 게시글 상세보기 */
+.fb-title {
+  font-size: 24px;
+  font-weight: bold;
+  margin-bottom: 16px;
+  border-bottom: 1px solid #ddd;
+  padding-bottom: 8px;
+}
+
+.fb-meta {
+  display: flex;
+  justify-content: space-between;
+  font-size: 14px;
+  color: #666;
+  margin-bottom: 16px;
+}
+
+.fb-content {
+  background-color: #f9f9f9;
+  padding: 20px;
+  line-height: 1.6;
+  border-radius: 6px;
+  font-size: 16px;
+  margin-bottom: 30px;
+}
+
+/* 글쓰기 폼 */
+.fb-write-container {
+  max-width: 800px;
+  margin: 0 auto;
+  background-color: #fff;
+  padding: 30px;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  box-shadow: 0 0 8px rgba(0,0,0,0.05);
+}
+
+.fb-write-title {
+  text-align: center;
+  margin-bottom: 24px;
+  font-size: 24px;
+  font-weight: bold;
+}
+
+.fb-write-form {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.fb-write-table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.fb-write-table th {
+  width: 100px;
+  text-align: left;
+  vertical-align: top;
+  padding: 12px;
+  background-color: #f9f9f9;
+  font-weight: 500;
+}
+
+.fb-write-table td {
+  padding: 12px;
+}
+
+.fb-write-table input,
+.fb-write-table textarea {
+  width: 100%;
+  padding: 10px;
+  font-size: 16px;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+}
+
+/* 버튼 그룹 */
+.fb-button-group {
+  display: flex;
+  justify-content: flex-end;
+  gap: 12px;
+}
+
+.fb-submit-button,
+.fb-cancel-button {
+  padding: 10px 20px;
+  border: none;
+  font-size: 16px;
+  border-radius: 6px;
+  cursor: pointer;
+}
+
+.fb-submit-button {
+  background-color: #0d6efd;
+  color: white;
+}
+
+.fb-submit-button:hover {
+  background-color: #0b5ed7;
+}
+
+.fb-cancel-button {
+  background-color: #6c757d;
+  color: white;
+}
+
+.fb-cancel-button:hover {
+  background-color: #5a6268;
+}
+
+/* 목록으로 버튼 */
+.fb-back-link {
+  display: inline-block;
+  margin-top: 30px;
+  text-decoration: underline;
+  color: #333;
+  font-size: 14px;
+}
+
+.fb-pagination button,
+.fb-pagination .fb-current-page {
+  display: inline-block;
+  width: 32px;
+  height: 32px;
+  line-height: 32px;
+  margin: 0 4px;
+  text-align: center;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  background-color: white;
+  color: #333;
+  font-size: 14px;
+  cursor: pointer;
+  
+}
+
+.fb-pagination .fb-current-page {
+  background-color: #007bff;
+  color: white;
+  font-weight: bold;
+  cursor: default;
+}
+
+.fb-pagination {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-top: 20px;
+}
+

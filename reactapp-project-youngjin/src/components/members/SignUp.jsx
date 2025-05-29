@@ -11,6 +11,8 @@ const Signup = () => {
 
   const [username, setUsername] = useState('');
   const [userCheck, setUserCheck] = useState(null);
+  const [passwordError, setPasswordError] = useState('');
+  const [phoneError, setPhoneError] = useState('');
 
   const firstPhoneRef = useRef();
   const middlePhoneRef = useRef();
@@ -93,7 +95,10 @@ const Signup = () => {
   const submitHandle =  async (e) => {
     e.preventDefault();
     const form = e.target;
-
+    
+    setPasswordError('');
+    setPhoneError('');
+    
     if (userCheck === 'duplicate') {
       alert('이미 사용 중인 아이디입니다. 다른 아이디를 입력하세요.');
       form.username.focus();
@@ -123,10 +128,16 @@ const Signup = () => {
         return;
       }
     }
-    
-    if (form.password.value !== form.passwordConfirm.value) {
-      alert("비밀번호가 일치하지 않습니다.");
-      form.passwordConfirm.focus();
+  
+    if(form.password.value !== form.passwordConfirm.value) {
+      setPasswordError("비밀번호가 일치하지 않습니다.");
+      form.password.focus();
+      return;
+    }
+
+    if (form.password.value.length < 6 || form.password.value.length > 12) {
+      setPasswordError('6~12자리 사이로 입력해 주세요');
+      form.password.focus();
       return;
     }
     
@@ -141,6 +152,12 @@ const Signup = () => {
     const detailAddress = form.detailAddress.value;
     const totalAddress = `${address} (${detailAddress})`;
     
+    if (!/^\d+$/.test(phone.replace(/-/g, ''))) {
+      setPhoneError('숫자만 입력이 가능합니다');
+      lastPhoneRef.current.focus();
+      return;
+    }
+
     if(!form.emailDomain.value.includes('.')) {
       alert('이메일 형식이 아닙니다.');
       form.emailDomain.focus();
@@ -182,7 +199,14 @@ const Signup = () => {
             </tr>
             <tr>
               <td><label htmlFor="signup-password">비밀번호</label></td>
-              <td><input type="password" id="signup-password" name="password" ref={passwordRef} /></td>
+              <td style={{ position: 'relative' }}>
+                <input type="password" id="signup-password" name="password" ref={passwordRef} />
+                {passwordError && (
+                  <span style={{ color: 'red', marginLeft: '10px', fontSize: '0.9rem' }}>
+                    {passwordError}
+                  </span>
+                )}
+              </td>
             </tr>
             <tr>
               <td><label htmlFor="signup-password-confirm">비밀번호 확인</label></td>
@@ -208,12 +232,19 @@ const Signup = () => {
             </tr>
             <tr>
               <td><label htmlFor="signup-phone">휴대전화</label></td>
-              <td><input type="text" id="signup-phone-first" name="firstPhone" maxLength="3"
+              <td style={{ position: 'relative', display: 'flex', alignItems: 'center', gap: '5px' }}>
+                <input type="text" id="signup-phone-first" name="firstPhone" maxLength="3"
                 ref={firstPhoneRef} onChange={e => handlePhoneInput(e, 3, middlePhoneRef)} />-
               <input type="text" id="signup-phone-middle" name="middlePhone" maxLength="4"
                 ref={middlePhoneRef} onChange={e => handlePhoneInput(e, 4, lastPhoneRef)} />-
               <input type="text" id="signup-phone-last" name="lastPhone" maxLength="4" 
-                ref={lastPhoneRef} /></td>
+                ref={lastPhoneRef} />
+              {phoneError && (
+                  <span style={{ color: 'red', marginLeft: '10px', fontSize: '0.9rem' }}>
+                    {phoneError}
+                  </span>
+                )}
+              </td>
             </tr>
             <tr>
               <td><label htmlFor="signup-zipcode">우편번호</label></td>
