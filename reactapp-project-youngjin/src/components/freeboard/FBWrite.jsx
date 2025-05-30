@@ -1,10 +1,10 @@
-import { Navigate, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { firestore } from "../../firestoreConfig";
 import { useEffect, useState } from "react";
 import { addDoc, collection, Timestamp } from "firebase/firestore";
 import '../design/fbstyle.css';
 
-export default function FBWrite({ nowDate, formatDate}) {
+export default function FBWrite() {
   const [title, setTitle] = useState('');
   const [content, setContent] = useState('');
   const [user, setUser] = useState(null);
@@ -35,7 +35,6 @@ export default function FBWrite({ nowDate, formatDate}) {
         username: user.username,
         title,
         content,
-        date: formatDate(nowDate()),
         createAt: Timestamp.now(),
       });
       alert('글을 성공적으로 등록되었습니다.');

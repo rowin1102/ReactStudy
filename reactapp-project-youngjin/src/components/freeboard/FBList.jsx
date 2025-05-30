@@ -2,10 +2,9 @@ import { Link, useSearchParams } from 'react-router-dom';
 import { useEffect, useState } from 'react';
 import { collection, getDocs, orderBy, query } from 'firebase/firestore';
 import { firestore } from "../../firestoreConfig";
-import FBNav from '../navigation/FBNav';
 import '../design/fbstyle.css';
 
-export default function FBList() {
+export default function FBList({formatDate}) {
   const [allData, setAllData] = useState([]);
   const [searchParams, setSearchParams] = useSearchParams();
   const [currentPage, setCurrentPage] = useState(parseInt(searchParams.get("page")) || 1);
@@ -51,8 +50,13 @@ export default function FBList() {
 
   return (
     <div className="fb-wrapper">
-      <FBNav />
-
+      <div id="fb-nav-container">
+        <div id="fb-nav">
+          <h2>Free Board</h2>
+          <Link to="/fbWrite" id="fb-write-button">글쓰기</Link>
+        </div>
+      </div> 
+      
       <table className="fb-table">
         <thead>
           <tr>
@@ -70,7 +74,7 @@ export default function FBList() {
                   {item.title}
                 </Link>
               </td>
-              <td>{item.date}</td>
+              <td>{formatDate(item.createAt)}</td>
             </tr>
           ))}
         </tbody>

@@ -62,14 +62,17 @@
   margin-bottom: 16px;
   border-bottom: 1px solid #ddd;
   padding-bottom: 8px;
+  text-align: left;
 }
 
 .fb-meta {
-  display: flex;
-  justify-content: space-between;
-  font-size: 14px;
   color: #666;
   margin-bottom: 16px;
+}
+
+.fb-meta td {
+  padding: 8px 6px ;
+  text-align: left;
 }
 
 .fb-content {
@@ -79,7 +82,33 @@
   border-radius: 6px;
   font-size: 16px;
   margin-bottom: 30px;
+  text-align: left;
 }
+
+.fb-detail {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.fb-detail th,
+.fb-detail td {
+  padding: 12px;
+  border: none;
+  vertical-align: top;
+}
+
+.fb-detail th.fb-title {
+  border-bottom: 1px solid #ddd;
+}
+
+.fb-back-link {
+  display: inline-block;
+  margin-top: 30px;
+  text-decoration: underline;
+  color: #333;
+  font-size: 14px;
+}
+
 
 /* 글쓰기 폼 */
 .fb-write-container {

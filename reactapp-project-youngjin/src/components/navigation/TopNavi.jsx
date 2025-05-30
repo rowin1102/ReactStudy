@@ -16,21 +16,22 @@ export default function Navi(props) {
     <nav className="custom-navbar navbar navbar navbar-expand-md navbar-dark bg-dark" arial-label="Furni navigation bar">
 
       <div className="container">
-        <a className="navbar-brand" href="/">Furni<span>.</span></a>
+        <Link className="navbar-brand" to="/">Furni<span>.</span></Link>
 
-        <button className="navbar-toggler" type="button" aria-label="Toggle navigation">
+        <button className="navbar-toggler" type="button" aria-label="Toggle navigation"  data-bs-toggle="collapse" 
+          data-bs-target="#navbarsFurni" aria-controls="navbarsFurni" aria-expanded="false">
           <span className="navbar-toggler-icon"></span>
         </button>
 
         <div className="collapse navbar-collapse" id="navbarsFurni">
           <ul className="custom-navbar-nav navbar-nav ms-auto mb-2 mb-md-0">
             <li className="nav-item active">
-              <a className="nav-link" href="/">Home</a>
+              <Link className="nav-link" to="/">Home</Link>
             </li>
-            <li><a className="nav-link" href="/fbList">Free Board</a></li>
-            <li><a className="nav-link" href="/qnaList">Q&A</a></li>
-            <li><a className="nav-link" href="/rList">Reference</a></li>
-            <li><a className="nav-link" href="">Talking</a></li>
+            <li><Link className="nav-link" to="/fbList">Free Board</Link></li>
+            <li><Link className="nav-link" to="/qnaControl">Q&A</Link></li>
+            <li><Link className="nav-link" to="/rList">Reference</Link></li>
+            <li><Link className="nav-link" to="">Talking</Link></li>
           </ul>
 
           <ul className="custom-navbar-cta navbar-nav mb-2 mb-md-0 ms-5">

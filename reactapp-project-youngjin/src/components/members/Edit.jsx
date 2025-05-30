@@ -190,7 +190,7 @@ export default function Edit(props) {
       return;
     }
 
-    await membersEdit(collection, id.username, password, name, email, phone, zipcode, totalAddress)
+    await membersEdit(collection, id.username, password, name, email, phone, zipcode, totalAddress);
     alert('회원정보가 수정되엇습니다.');
     navigate('/');
   }
