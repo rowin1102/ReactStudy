@@ -11,6 +11,12 @@ import FBWrite from './components/freeboard/FBWrite';
 import FBEdit from './components/freeboard/FBEdit';
 import QnAControl from './components/qna/QnAControl';
 import RList from './components/reference/RList';
+import RWrite from './components/reference/RWrite';
+import RView from './components/reference/RView';
+import REdit from './components/reference/rEdit';
+import StartChat from './components/talking/StartChat';
+
+import PreTalking from './components/talking/PreTalking';
 
 import './components/design/bootstrap.min.css';
 import './components/design/style.css';
@@ -20,7 +26,7 @@ import { useEffect, useState } from 'react';
 
 const formatDate = (timestamp) => {
   const now = new Date();
-  const target = timestamp.toDate();;
+  const target = timestamp.toDate();
 
   const pad = (n) => n.toString().padStart(2, '0');
 
@@ -63,7 +69,12 @@ export default function App() {
       <Route path='/fbWrite' element={<FBWrite />} />
       <Route path='/fbEdit/:no' element={<FBEdit />} />
       <Route path='/qnaControl' element={<QnAControl formatDate={formatDate} id={id} />} />
-      <Route path='/rList' element={<RList />} />
+      <Route path='/rList' element={<RList formatDate={formatDate} />} />
+      <Route path='/rWrite' element={<RWrite />} />
+      <Route path='/rView/:no' element={<RView formatDate={formatDate} />} />
+      <Route path='/rEdit/:no' element={<REdit />} />
+      <Route path='/startChat' element={<StartChat />} />
+      <Route path='/preTalking' element={<PreTalking />} />
     </Routes>
   </>); 
 }

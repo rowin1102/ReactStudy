@@ -1,12 +1,12 @@
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { firestore } from "../../firestoreConfig";
 
-import '../design/modal.css';
 import { addDoc, collection, Timestamp } from "firebase/firestore";
 
 export default function QnAModalWindow(props) {
   const [title, setTitle] = useState('');
   const [content, setContent] = useState('');
+  const titleInputRef = useRef(null);
   
   const submitHandle = async e => {
     e.preventDefault();
@@ -45,9 +45,19 @@ export default function QnAModalWindow(props) {
     };
 
     modalEl.addEventListener('hidden.bs.modal', handleClearForm);
+    
+    const handleShowModal = () => {
+      setTimeout(() => {
+        if (titleInputRef.current) {
+          titleInputRef.current.focus();
+        }
+      }, 100);
+    };
+    modalEl.addEventListener('shown.bs.modal', handleShowModal);
 
     return () => {
       modalEl.removeEventListener('hidden.bs.modal', handleClearForm);
+      modalEl.addEventListener('shown.bs.modal', handleShowModal);
     };
   }, []);
 
@@ -69,7 +79,7 @@ export default function QnAModalWindow(props) {
 
               <div className="mb-3">
                 <label htmlFor="commentTitle" className="form-label">제목</label>
-                <input type="text" className="form-control" id="commentTitle" name="title"
+                <input type="text" className="form-control" id="commentTitle" name="title" ref={titleInputRef}
                   placeholder="제목을 입력하세요" value={title} onChange={e => setTitle(e.target.value)}/>
               </div>
 

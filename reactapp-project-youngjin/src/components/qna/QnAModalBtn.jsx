@@ -1,3 +1,4 @@
+
 export default function QnAModalBtn(props) {
   const loginUserId = JSON.parse(localStorage.getItem('loginID'))?.username;
 
@@ -12,6 +13,7 @@ export default function QnAModalBtn(props) {
       modal.show();
     }
   }
+
 
   return (<>
     <div className="d-flex justify-content-center" style={{ marginTop: '100px' }}>

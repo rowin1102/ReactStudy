@@ -31,7 +31,7 @@ export default function Navi(props) {
             <li><Link className="nav-link" to="/fbList">Free Board</Link></li>
             <li><Link className="nav-link" to="/qnaControl">Q&A</Link></li>
             <li><Link className="nav-link" to="/rList">Reference</Link></li>
-            <li><Link className="nav-link" to="">Talking</Link></li>
+            <li><Link className="nav-link" to="/startChat">Chat</Link></li>
           </ul>
 
           <ul className="custom-navbar-cta navbar-nav mb-2 mb-md-0 ms-5">

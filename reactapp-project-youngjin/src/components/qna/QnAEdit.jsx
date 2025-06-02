@@ -8,6 +8,7 @@ export default function QnAEdit(props) {
   const [username, setUsername] = useState('');
   const [title, setTitle] = useState('');
   const [content, setContent] = useState('');
+  const [originalData, setOriginalData] = useState({ title: '', content: '' });
 
   const qnaEdit = async (collection, p_username, p_title, p_content) => {
     await setDoc(doc(firestore, collection, id), {
@@ -43,23 +44,30 @@ export default function QnAEdit(props) {
         setUsername(data.username || '');
         setTitle(data.title || '');
         setContent(data.content || '');
+
+        setOriginalData({
+          title: data.title || '',
+          content: data.content || ''
+        });
       }
     };
     fetch();
+  }, [id]);
 
+  useEffect(() => {
     const modalEl = document.getElementById(modalId);
 
-    const handleClearForm = () => {
-      setTitle(title);
-      setContent(content);
+    const handleShow = () => {
+      setTitle(originalData.title);
+      setContent(originalData.content);
     };
 
-    modalEl.addEventListener('hidden.bs.modal', handleClearForm);
+    modalEl.addEventListener('show.bs.modal', handleShow);
 
     return () => {
-      modalEl.removeEventListener('hidden.bs.modal', handleClearForm);
+      modalEl.removeEventListener('show.bs.modal', handleShow);
     };
-  }, [id]);
+  }, [modalId, originalData]);
 
   return (<>
     <button className="btn btn-outline-warning btn-sm" data-bs-toggle="modal" 

@@ -1,7 +1,6 @@
 import QnAModalBtn from './QnAModalBtn';
 import QnAModalWindow from './QnAModalWindow';
 import QnAList from './QnAList';
-import '../design/modal.css';
 
 export default function QnAControl(props) {
   const {formatDate, id} = props;

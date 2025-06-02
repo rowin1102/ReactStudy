@@ -1,9 +1,9 @@
 import { useNavigate, useParams } from "react-router-dom";
 import { firestore } from "../../firestoreConfig";
-
-import '../design/fbstyle.css';
 import { useEffect, useState } from "react";
 import { doc, getDoc, setDoc, Timestamp } from "firebase/firestore";
+
+import '../design/fbstyle.css';
 
 export default function FBEdit() {
   const { no } = useParams();
@@ -49,7 +49,7 @@ export default function FBEdit() {
   return (<>
     <div className="fb-wrapper">
       <div className="fb-write-container">
-        <h2 className="fb-write-title">글쓰기</h2>
+        <h2 className="fb-write-title">수정하기</h2>
         <form className="fb-write-form" onSubmit={submitHandle}> 
           <table className="fb-write-table">
             <tbody>
@@ -77,7 +77,7 @@ export default function FBEdit() {
           </table>
           <div className="fb-button-group">
             <button type="submit" className="fb-submit-button">등록</button>
-            <button type="button" className="fb-cancel-button">취소</button>
+            <button type="button" className="fb-cancel-button" onClick={() => navigate('/fbList')} >취소</button>
           </div>
         </form>
       </div>

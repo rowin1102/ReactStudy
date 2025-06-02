@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import { firestore } from "../../firestoreConfig";
 import { collection, deleteDoc, doc, getDocs, orderBy, query } from "firebase/firestore";
 import QnAEdit from "./QnAEdit";
+import QnAComment from "./QnAComment";
 
 export default function QnAList(props) {
   const {formatDate} = props
@@ -30,6 +31,10 @@ export default function QnAList(props) {
     window.location.reload();
   }
 
+  const loginUserId = JSON.parse(localStorage.getItem("loginID"));
+
+  
+
   return (<>
     <ul className="list-group mt-3">
       {allData.map(row => (
@@ -37,6 +42,7 @@ export default function QnAList(props) {
           
           <div className="d-flex justify-content-between align-items-center">
             <h5 className="mb-0 fw-bold">{row.title}</h5>
+            {row.username === loginUserId?.username ? (
             <div>
               <QnAEdit modalId={`editModal-${row.id}`} id={row.id} /> &nbsp;
               <button className="btn btn-outline-danger btn-sm"
@@ -47,19 +53,18 @@ export default function QnAList(props) {
                   }
                 }}>삭제</button>
             </div>
+            ) : ''}
           </div>
 
           <div className="mt-2 mb-1 text-muted" style={{ fontSize: '0.9rem' }}>
             작성자: {row.username} | 날짜: {formatDate(row.createAt)}
           </div>
 
-          <p className="mb-0" style={{ whiteSpace: 'pre-wrap' }}>
+          <p className="mb-0" style={{ whiteSpace: 'pre-wrap', fontSize: '1.2rem' }}>
             {row.content}
           </p>
           
-          <div className="text-end mt-3">
-            <button className="btn btn-secondary btn-sm">댓글 작성</button>
-          </div>
+          <QnAComment id={row.id} formatDate={formatDate} />
         </li>
       ))}
     </ul>
