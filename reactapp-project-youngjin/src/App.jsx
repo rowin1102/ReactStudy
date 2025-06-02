@@ -15,6 +15,7 @@ import RWrite from './components/reference/RWrite';
 import RView from './components/reference/RView';
 import REdit from './components/reference/rEdit';
 import StartChat from './components/talking/StartChat';
+import Chat from './components/talking/Chat';
 
 import PreTalking from './components/talking/PreTalking';
 
@@ -74,6 +75,7 @@ export default function App() {
       <Route path='/rView/:no' element={<RView formatDate={formatDate} />} />
       <Route path='/rEdit/:no' element={<REdit />} />
       <Route path='/startChat' element={<StartChat />} />
+      <Route path='/chat' element={<Chat />} />
       <Route path='/preTalking' element={<PreTalking />} />
     </Routes>
   </>); 
