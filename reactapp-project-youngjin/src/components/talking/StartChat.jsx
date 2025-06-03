@@ -15,7 +15,7 @@ export default function StartChat(props) {
       return;
     }
 
-    window.open(`/chat?roomId=${refRoom.current.value}&userId=${refId.current.value}`,
+    window.open(`/#/chat?roomId=${refRoom.current.value}&userId=${refId.current.value}`,
       '', 'width=700, height=900');
   }
 

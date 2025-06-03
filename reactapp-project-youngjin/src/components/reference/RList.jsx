@@ -54,7 +54,7 @@ export default function ReferenceList(props) {
     <div className="fb-wrapper">
       <div id="fb-nav-container">
         <div id="fb-nav">
-          <h2>Free Board</h2>
+          <h2>자료실</h2>
           <Link to="/rWrite" id="fb-write-button">글쓰기</Link>
         </div>
       </div> 

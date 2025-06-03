@@ -28,9 +28,9 @@ export default function Navi(props) {
             <li className="nav-item active">
               <Link className="nav-link" to="/">Home</Link>
             </li>
-            <li><Link className="nav-link" to="/fbList">Free Board</Link></li>
+            <li><Link className="nav-link" to="/fbList">자유게시판</Link></li>
             <li><Link className="nav-link" to="/qnaControl">Q&A</Link></li>
-            <li><Link className="nav-link" to="/rList">Reference</Link></li>
+            <li><Link className="nav-link" to="/rList">자료실</Link></li>
             <li><Link className="nav-link" to="/startChat">Chat</Link></li>
           </ul>
 

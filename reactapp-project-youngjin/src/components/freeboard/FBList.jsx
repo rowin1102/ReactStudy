@@ -47,7 +47,7 @@ export default function FBList({formatDate}) {
     <div className="fb-wrapper">
       <div id="fb-nav-container">
         <div id="fb-nav">
-          <h2>Free Board</h2>
+          <h2>자유게시판</h2>
           <Link to="/fbWrite" id="fb-write-button">글쓰기</Link>
         </div>
       </div> 

@@ -21,7 +21,6 @@ export default function QnAList(props) {
 
       setAllData(dataArray);
     };
-    console.log('data', allData);
     getCollection();
   }, []);
 
