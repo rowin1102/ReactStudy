@@ -1,4 +1,4 @@
-import {Routes, Route} from 'react-router-dom';
+import {Routes, Route, useLocation} from 'react-router-dom';
 
 import TopNavi from "./components/navigation/TopNavi";
 import Home from "./components/Home";
@@ -49,6 +49,7 @@ const formatDate = (timestamp) => {
 
 export default function App() {
   const [id, setId] = useState(null);
+  const location = useLocation();
 
   useEffect(() => {
     const saved = localStorage.getItem("loginID");
@@ -57,8 +58,13 @@ export default function App() {
     }
   }, []);
 
+  const hideNaviRoutes = ['/chat'];
+
   return (<>
-    <TopNavi id={id} setId={setId} />
+      {!hideNaviRoutes.includes(location.pathname) && (
+        <TopNavi id={id} setId={setId} />
+      )}
+    
     <Routes>
       <Route path='/' element={<Home />} />
       <Route path='/login' element={<Login setId={setId} id={id} />} />

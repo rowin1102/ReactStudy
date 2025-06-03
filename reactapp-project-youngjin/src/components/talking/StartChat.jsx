@@ -24,9 +24,11 @@ export default function StartChat(props) {
     <div className="card-header p-4">
       <h5 className="mb-3 text-center">Chat</h5>
 
-      <div className="d-flex flex-column">
-        <input type="text" className="form-control mb-2" placeholder="Enter Room ID" value='room' readOnly ref={refRoom} />
-        <input type="text" className="form-control mb-3" placeholder="Enter Your User ID" ref={refId} />
+      <div className="d-flex flex-column align-items-center">
+        <input type="text" className="form-control mb-2" placeholder="Enter Room ID" value='room' 
+          readOnly ref={refRoom} style={{ width: '300px', fontSize: '0.9rem' }} />
+        <input type="text" className="form-control mb-3" placeholder="닉네임을 입력하세요" 
+          ref={refId} style={{ width: '300px', fontSize: '0.9rem' }} />
 
         <div className="d-flex justify-content-center">
           <button type="button" className="btn btn-primary" onClick={openChatWin}>

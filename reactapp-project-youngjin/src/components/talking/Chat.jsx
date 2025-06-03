@@ -4,6 +4,7 @@ import { child, onValue, push, ref, set } from "firebase/database";
 import { ref as storageRef, uploadBytes, getDownloadURL } from "firebase/storage";
 import { realtime } from "../../realtimeConfig";
 import { storage } from "../../firestoreConfig"; 
+import '../design/chat.css';
 
 export default function Chat() {
   const [searchParams] = useSearchParams();
@@ -128,7 +129,9 @@ export default function Chat() {
       <div className="container py-5">
         <div className="row d-flex justify-content-center">
           <div className="col-md-10 col-lg-8 col-xl-6">
-            userId : {userId}
+            <div className="fs-4 fw-bold mb-2">
+              userId : {userId}
+            </div>
             <div className="card" id="chat2">
               <div className="card-body"
                 style={{ position: 'relative', height: '600px', overflowY: 'auto' }} ref={chatWindow}>
@@ -136,7 +139,6 @@ export default function Chat() {
                   <p style={{ textAlign: 'center', color: '#888' }}>채팅 내역이 없습니다.</p>
                 )}
               </div>
-
               <div className="card-footer text-muted d-flex justify-content-start align-items-center p-3">
                 <input type="text" className="form-control form-control-lg"
                   id="exampleFormControlInput1" placeholder="Type message"
