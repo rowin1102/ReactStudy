@@ -4,7 +4,6 @@ import { child, onValue, push, ref, set } from "firebase/database";
 import { ref as storageRef, uploadBytes, getDownloadURL } from "firebase/storage";
 import { realtime } from "../../realtimeConfig";
 import { storage } from "../../firestoreConfig"; 
-import '../design/chat.css';
 
 export default function Chat() {
   const [searchParams] = useSearchParams();
