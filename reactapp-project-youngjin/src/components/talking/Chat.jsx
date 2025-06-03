@@ -1,4 +1,4 @@
-import { useSearchParams } from 'react-router-dom';
+import { useNavigate, useSearchParams } from 'react-router-dom';
 import { useEffect, useRef, useState } from "react";
 import { child, onValue, push, ref, set } from "firebase/database";
 import { ref as storageRef, uploadBytes, getDownloadURL } from "firebase/storage";
@@ -14,6 +14,7 @@ export default function Chat() {
 
   const chatWindow = useRef();
   const fileInputRef = useRef();
+  const navigate = useNavigate();
   const [chatData, setChatData] = useState([]);
 
   const messageWrite = (chatRoom, chatId, ChatMessage) => {
@@ -129,8 +130,12 @@ export default function Chat() {
       <div className="container py-5">
         <div className="row d-flex justify-content-center">
           <div className="col-md-10 col-lg-8 col-xl-6">
-            <div className="fs-4 fw-bold mb-2">
-              userId : {userId}
+            <div className="d-flex justify-content-between align-items-center mb-2">
+              <div className="fs-5 fw-bold">userId : {userId}</div>
+              <button className="btn btn-outline-danger btn-sm"
+                onClick={() => window.opener ? window.close() : navigate('/startChat')}>
+                나가기
+              </button>
             </div>
             <div className="card" id="chat2">
               <div className="card-body"
