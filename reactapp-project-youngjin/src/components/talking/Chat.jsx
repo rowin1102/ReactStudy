@@ -1,128 +1,180 @@
-export default function Chat(props) {
+import { useSearchParams } from 'react-router-dom';
+import { useEffect, useRef, useState } from "react";
+import { child, onValue, push, ref, set } from "firebase/database";
+import { ref as storageRef, uploadBytes, getDownloadURL } from "firebase/storage";
+import { realtime } from "../../realtimeConfig";
+import { storage } from "../../firestoreConfig"; 
+import '../design/chat.css';
 
-  return (<>
+export default function Chat() {
+  const [searchParams] = useSearchParams();
+  const roomId = searchParams.get('roomId');
+  const userId = searchParams.get('userId');
+  const userName = searchParams.get('userName');
+
+  const chatWindow = useRef();
+  const fileInputRef = useRef();
+  const [chatData, setChatData] = useState([]);
+
+  const messageWrite = (chatRoom, chatId, ChatMessage) => {
+    const newPostKey = push(child(ref(realtime), 'tempValue')).key;
+
+    set(ref(realtime, `${chatRoom}/${newPostKey}`), {
+      id: chatId,
+      name: userName || chatId,
+      message: ChatMessage,
+      timestamp: Date.now(),
+    });
+    console.log('입력성공');
+  };
+
+  const handleImageUpload = async (e) => {
+    if (!e.target.files || e.target.files.length === 0) return;
+    const file = e.target.files[0];
+    if (!file.type.startsWith('image/')) {
+      alert('이미지 파일만 업로드 가능합니다.');
+      return;
+    }
+
+    try {
+      const storageReference = storageRef(storage, `chatImages/${roomId}/${userId}/${file.name}_${Date.now()}`);
+      await uploadBytes(storageReference, file);
+      const downloadURL = await getDownloadURL(storageReference);
+      messageWrite(roomId, userId, downloadURL);
+    } catch (error) {
+      console.error('이미지 업로드 실패:', error);
+      alert('이미지 업로드에 실패했습니다.');
+    }
+
+    e.target.value = null;
+  };
+
+  useEffect(() => {
+    if (!roomId || !userId) return;
+
+    const dbRef = ref(realtime, roomId);
+
+    const unsubscribe = onValue(dbRef, snapshot => {
+      let showDiv = [];
+      let lastDateStr = null;
+
+      snapshot.forEach(childSnapshot => {
+        const childData = childSnapshot.val();
+        if (!childData.timestamp) return;
+
+        const msgDate = new Date(childData.timestamp);
+        const dateStr = msgDate.toISOString().slice(0, 10);
+        const todayStr = new Date().toISOString().slice(0, 10);
+
+        if (dateStr !== lastDateStr) {
+          lastDateStr = dateStr;
+          let displayDate = '';
+          if (dateStr === todayStr) {
+            displayDate = 'Today';
+          } else {
+            const weekdays = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
+            const dayName = weekdays[msgDate.getDay()];
+            displayDate = `${dateStr} ${dayName}`;
+          }
+
+          showDiv.push(
+            <div className="divider d-flex align-items-center mb-4" key={'divider-' + dateStr}>
+              <p className="text-center mx-3 mb-0" style={{ color: '#a2aab7' }}>{displayDate}</p>
+            </div>
+          );
+        }
+
+        const timeString = msgDate.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+        const name = childData.name || '알 수 없음';
+
+        const isImageUrl = typeof childData.message === 'string' &&
+          childData.message.includes("firebasestorage.googleapis.com");
+
+        const chatBubble = (
+          <div className={`d-flex flex-column ${childData.id === userId ? 
+            'align-items-end' : 'align-items-start'} mb-3`} key={childSnapshot.key}>
+            <div style={{ fontWeight: 'bold', fontSize: '0.8em', color: '#555', marginBottom: '2px' }}>{name}</div>
+
+            {isImageUrl ? (
+              <div style={{ padding: '5px' }}>
+                <img src={childData.message} alt="uploaded" style={{ maxWidth: '200px', borderRadius: '10px' }} />
+              </div>
+            ) : (
+              <div className={childData.id === userId ? "bg-primary text-white p-2 rounded-3" : "bg-light p-2 rounded-3"}>
+                <span>{childData.message}</span>
+              </div>
+            )}
+
+            <div style={{ fontSize: '0.7em', color: '#000', marginTop: '4px' }}>{timeString}</div>
+          </div>
+        );
+
+        showDiv.push(chatBubble);
+      });
+
+      setChatData(showDiv);
+
+      setTimeout(() => {
+        if (chatWindow.current) {
+          chatWindow.current.scrollTop = chatWindow.current.scrollHeight;
+        }
+        }, 100);
+      });
+
+    return () => unsubscribe();
+  }, [roomId, userId]);
+
+  return (
     <section>
       <div className="container py-5">
         <div className="row d-flex justify-content-center">
           <div className="col-md-10 col-lg-8 col-xl-6">
+            userId : {userId}
             <div className="card" id="chat2">
-              {/* <div className="card-header d-flex justify-content-between align-items-center p-3">
-                <h5 className="mb-0">Chat</h5>
-                <button type="button" className="btn btn-primary btn-sm">Let's Chat App</button>
-              </div> */}
-
-              <div className="card-body" style={{ position: 'relative', height: '400px', overflowY: 'auto' }}>
-                <div className="d-flex flex-row justify-content-start">
-                  <img src="https://mdbcdn.b-cdn.net/img/Photos/new-templates/bootstrap-chat/ava3-bg.webp"
-                    alt="avatar 1" style={{ width: '45px', height: '100%' }} />
-                  <div>
-                    <p className="small p-2 ms-3 mb-1 rounded-3 bg-body-tertiary">Hi</p>
-                    <p className="small p-2 ms-3 mb-1 rounded-3 bg-body-tertiary">How are you ...???</p>
-                    <p className="small p-2 ms-3 mb-1 rounded-3 bg-body-tertiary">
-                      What are you doing tomorrow? Can we come up a bar?
-                    </p>
-                    <p className="small ms-3 mb-3 rounded-3 text-muted">23:58</p>
-                  </div>
-                </div>
-
-                <div className="divider d-flex align-items-center mb-4">
-                  <p className="text-center mx-3 mb-0" style={{ color: '#a2aab7' }}>Today</p>
-                </div>
-
-                <div className="d-flex flex-row justify-content-end mb-4 pt-1">
-                  <div>
-                    <p className="small p-2 me-3 mb-1 text-white rounded-3 bg-primary">Hiii, I'm good.</p>
-                    <p className="small p-2 me-3 mb-1 text-white rounded-3 bg-primary">How are you doing?</p>
-                    <p className="small p-2 me-3 mb-1 text-white rounded-3 bg-primary">
-                      Long time no see! Tomorrow office. will be free on sunday.
-                    </p>
-                    <p className="small me-3 mb-3 rounded-3 text-muted d-flex justify-content-end">00:06</p>
-                  </div>
-                  <img src="https://mdbcdn.b-cdn.net/img/Photos/new-templates/bootstrap-chat/ava4-bg.webp"
-                    alt="avatar 1" style={{ width: '45px', height: '100%' }} />
-                </div>
-
-                <div className="d-flex flex-row justify-content-start mb-4">
-                  <img src="https://mdbcdn.b-cdn.net/img/Photos/new-templates/bootstrap-chat/ava3-bg.webp"
-                    alt="avatar 1" style={{ width: '45px', height: '100%' }} />
-                  <div>
-                    <p className="small p-2 ms-3 mb-1 rounded-3 bg-body-tertiary">Okay</p>
-                    <p className="small p-2 ms-3 mb-1 rounded-3 bg-body-tertiary">We will go on Sunday?</p>
-                    <p className="small ms-3 mb-3 rounded-3 text-muted">00:07</p>
-                  </div>
-                </div>
-
-                <div className="d-flex flex-row justify-content-end mb-4">
-                  <div>
-                    <p className="small p-2 me-3 mb-1 text-white rounded-3 bg-primary">That's awesome!</p>
-                    <p className="small p-2 me-3 mb-1 text-white rounded-3 bg-primary">
-                      I will meet you Sandon Square sharp at 10 AM
-                    </p>
-                    <p className="small p-2 me-3 mb-1 text-white rounded-3 bg-primary">Is that okay?</p>
-                    <p className="small me-3 mb-3 rounded-3 text-muted d-flex justify-content-end">00:09</p>
-                  </div>
-                  <img src="https://mdbcdn.b-cdn.net/img/Photos/new-templates/bootstrap-chat/ava4-bg.webp"
-                    alt="avatar 1" style={{ width: '45px', height: '100%' }} />
-                </div>
-
-                <div className="d-flex flex-row justify-content-start mb-4">
-                  <img src="https://mdbcdn.b-cdn.net/img/Photos/new-templates/bootstrap-chat/ava3-bg.webp"
-                    alt="avatar 1" style={{ width: '45px', height: '100%' }} />
-                  <div>
-                    <p className="small p-2 ms-3 mb-1 rounded-3 bg-body-tertiary">
-                      Okay i will meet you on Sandon Square
-                    </p>
-                    <p className="small ms-3 mb-3 rounded-3 text-muted">00:11</p>
-                  </div>
-                </div>
-
-                <div className="d-flex flex-row justify-content-end mb-4">
-                  <div>
-                    <p className="small p-2 me-3 mb-1 text-white rounded-3 bg-primary">
-                      Do you have pictures of Matley Marriage?
-                    </p>
-                    <p className="small me-3 mb-3 rounded-3 text-muted d-flex justify-content-end">00:11</p>
-                  </div>
-                  <img src="https://mdbcdn.b-cdn.net/img/Photos/new-templates/bootstrap-chat/ava4-bg.webp"
-                    alt="avatar 1" style={{ width: '45px', height: '100%' }} />
-                </div>
-
-                <div className="d-flex flex-row justify-content-start mb-4">
-                  <img src="https://mdbcdn.b-cdn.net/img/Photos/new-templates/bootstrap-chat/ava3-bg.webp"
-                    alt="avatar 1" style={{ width: '45px', height: '100%' }} />
-                  <div>
-                    <p className="small p-2 ms-3 mb-1 rounded-3 bg-body-tertiary">
-                      Sorry I don't have. i changed my phone.
-                    </p>
-                    <p className="small ms-3 mb-3 rounded-3 text-muted">00:13</p>
-                  </div>
-                </div>
-
-                <div className="d-flex flex-row justify-content-end">
-                  <div>
-                    <p className="small p-2 me-3 mb-1 text-white rounded-3 bg-primary">
-                      Okay then see you on sunday!!
-                    </p>
-                    <p className="small me-3 mb-3 rounded-3 text-muted d-flex justify-content-end">00:15</p>
-                  </div>
-                  <img src="https://mdbcdn.b-cdn.net/img/Photos/new-templates/bootstrap-chat/ava4-bg.webp"
-                    alt="avatar 1" style={{ width: '45px', height: '100%' }} />
-                </div>
+              <div className="card-body"
+                style={{ position: 'relative', height: '600px', overflowY: 'auto' }} ref={chatWindow}>
+                {chatData.length > 0 ? chatData : (
+                  <p style={{ textAlign: 'center', color: '#888' }}>채팅 내역이 없습니다.</p>
+                )}
               </div>
 
               <div className="card-footer text-muted d-flex justify-content-start align-items-center p-3">
-                <img src="https://mdbcdn.b-cdn.net/img/Photos/new-templates/bootstrap-chat/ava3-bg.webp"
-                  alt="avatar 3" style={{ width: '40px', height: '100%' }} />
-                <input type="text" className="form-control form-control-lg" id="exampleFormControlInput1"
-                  placeholder="Type message" />
-                <a className="ms-1 text-muted" href="#!"><i className="fas fa-paperclip"></i></a>
-                <a className="ms-3 text-muted" href="#!"><i className="fas fa-smile"></i></a>
-                <a className="ms-3" href="#!"><i className="fas fa-paper-plane"></i></a>
+                <input type="text" className="form-control form-control-lg"
+                  id="exampleFormControlInput1" placeholder="Type message"
+                  onKeyDown={e => {
+                    if (e.key === 'Enter' && e.target.value.trim() !== '') {
+                      messageWrite(roomId, userId, e.target.value.trim());
+                      e.target.value = '';
+                    }
+                  }}
+                />
+
+                <input type="file" accept="image/*" style={{ display: 'none' }} ref={fileInputRef}
+                  onChange={handleImageUpload} />
+
+                <a className="ms-1 text-muted" href="#!"
+                  onClick={e => {
+                    e.preventDefault();
+                    if (fileInputRef.current) fileInputRef.current.click();
+                  }}>
+                  <i className="fas fa-paperclip"></i>
+                </a>
+
+                <a className="ms-3" href="#!" onClick={e => {
+                  e.preventDefault();
+                  const input = document.getElementById('exampleFormControlInput1');
+                  if (input.value.trim() !== '') {
+                    messageWrite(roomId, userId, input.value.trim());
+                    input.value = '';
+                  }
+                }}>
+                  <i className="fas fa-paper-plane"></i>
+                </a>
               </div>
             </div>
           </div>
         </div>
       </div>
     </section>
-  </>); 
+  );
 }

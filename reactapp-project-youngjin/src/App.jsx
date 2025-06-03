@@ -17,7 +17,6 @@ import REdit from './components/reference/rEdit';
 import StartChat from './components/talking/StartChat';
 import Chat from './components/talking/Chat';
 
-import PreTalking from './components/talking/PreTalking';
 
 import './components/design/bootstrap.min.css';
 import './components/design/style.css';
@@ -76,7 +75,6 @@ export default function App() {
       <Route path='/rEdit/:no' element={<REdit />} />
       <Route path='/startChat' element={<StartChat />} />
       <Route path='/chat' element={<Chat />} />
-      <Route path='/preTalking' element={<PreTalking />} />
     </Routes>
   </>); 
 }

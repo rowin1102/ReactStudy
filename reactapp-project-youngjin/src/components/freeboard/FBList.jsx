@@ -9,9 +9,7 @@ export default function FBList({formatDate}) {
   const [searchParams, setSearchParams] = useSearchParams();
   const [currentPage, setCurrentPage] = useState(parseInt(searchParams.get("page")) || 1);
 
-  const itemsPerPage = 10;
-  const pagesPerGroup = 5;
-  const maxPages = 10;
+  const itemsPerPage = 20;
 
   useEffect(() => {
     const getCollection = async () => {
@@ -30,23 +28,20 @@ export default function FBList({formatDate}) {
   }, []);
 
   const totalItems = allData.length;
-  const totalPages = Math.min(Math.ceil(totalItems / itemsPerPage), maxPages);
+  const totalPages = Math.ceil(totalItems / itemsPerPage);
+
   const startIdx = (currentPage - 1) * itemsPerPage;
   const pageItems = allData.slice(startIdx, startIdx + itemsPerPage);
 
-  const currentGroup = Math.floor((currentPage - 1) / pagesPerGroup);
-  const startPage = currentGroup * pagesPerGroup + 1;
-  const endPage = Math.min(startPage + pagesPerGroup - 1, totalPages);
+  const pageNumbers = [];
+  for (let i = 1; i <= totalPages; i++) {
+    pageNumbers.push(i);
+  }
 
   const changePage = (page) => {
     setCurrentPage(page);
     setSearchParams({ page: page });
   };
-
-  const pageNumbers = [];
-  for (let i = startPage; i <= endPage; i++) {
-    pageNumbers.push(i);
-  }
 
   return (
     <div className="fb-wrapper">
@@ -81,20 +76,12 @@ export default function FBList({formatDate}) {
       </table>
 
       <div className="fb-pagination">
-        {startPage > 1 && (
-          <button onClick={() => changePage(startPage - 1)}>&laquo;</button>
-        )}
-
-        {pageNumbers.map((page) =>
+        {totalItems > itemsPerPage && pageNumbers.map(page =>
           page === currentPage ? (
             <span key={page} className="fb-current-page">{page}</span>
           ) : (
             <button key={page} onClick={() => changePage(page)}>{page}</button>
           )
-        )}
-
-        {endPage < totalPages && (
-          <button onClick={() => changePage(endPage + 1)}>&raquo;</button>
         )}
       </div>
     </div>
