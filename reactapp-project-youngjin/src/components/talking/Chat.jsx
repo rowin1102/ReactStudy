@@ -7,6 +7,7 @@ import { storage } from "../../firestoreConfig";
 import '../design/chat.css';
 
 export default function Chat() {
+  // URL 파라미터에서 roomId, userId, userName 추출
   const [searchParams] = useSearchParams();
   const roomId = searchParams.get('roomId');
   const userId = searchParams.get('userId');
@@ -17,6 +18,7 @@ export default function Chat() {
   const navigate = useNavigate();
   const [chatData, setChatData] = useState([]);
 
+  // 메시지 전송 함수
   const messageWrite = (chatRoom, chatId, ChatMessage) => {
     const newPostKey = push(child(ref(realtime), 'tempValue')).key;
 
@@ -38,6 +40,7 @@ export default function Chat() {
     }
 
     try {
+      // Firebase Storage에 이미지 업로드
       const storageReference = storageRef(storage, `chatImages/${roomId}/${userId}/${file.name}_${Date.now()}`);
       await uploadBytes(storageReference, file);
       const downloadURL = await getDownloadURL(storageReference);
@@ -67,6 +70,7 @@ export default function Chat() {
         const dateStr = msgDate.toISOString().slice(0, 10);
         const todayStr = new Date().toISOString().slice(0, 10);
 
+        // 날짜가 바뀌면 구분선 추가
         if (dateStr !== lastDateStr) {
           lastDateStr = dateStr;
           let displayDate = '';
