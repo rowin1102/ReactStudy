@@ -7,6 +7,7 @@ import '../design/fbstyle.css';
 export default function FBList({formatDate}) {
   const [allData, setAllData] = useState([]);
   const [searchParams, setSearchParams] = useSearchParams();
+  // 현재 페이지 번호. URL의 파마리머를 읽어서 초기값으로 설정.
   const [currentPage, setCurrentPage] = useState(parseInt(searchParams.get("page")) || 1);
 
   const itemsPerPage = 20;
@@ -28,16 +29,20 @@ export default function FBList({formatDate}) {
   }, []);
 
   const totalItems = allData.length;
+  // 전체 페이지 수
   const totalPages = Math.ceil(totalItems / itemsPerPage);
 
+  // 현재 페이지의 첫 게시글 인덱스. 
   const startIdx = (currentPage - 1) * itemsPerPage;
   const pageItems = allData.slice(startIdx, startIdx + itemsPerPage);
 
+  // 페이지 번호 리스트
   const pageNumbers = [];
   for (let i = 1; i <= totalPages; i++) {
     pageNumbers.push(i);
   }
 
+  // 페이지 변경
   const changePage = (page) => {
     setCurrentPage(page);
     setSearchParams({ page: page });
