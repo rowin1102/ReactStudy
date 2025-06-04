@@ -15,8 +15,6 @@ const firebaseConfig = {
   databaseURL : import.meta.env.VITE_databaseURL
 }
 
-// firebase에 연결 후 앱 초기화
-// const app = initializeApp(firebaseConfig);
 
 const app = getApps().length === 0
   ? initializeApp(firebaseConfig)
